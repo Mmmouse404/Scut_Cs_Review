@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="utf-8"?>
+<circuit>
+  <version>1</version>
+  <attributes/>
+  <visualElements>
+    <visualElement>
+      <elementName>External</elementName>
+      <elementAttributes>
+        <entry>
+          <string>Label</string>
+          <string>arraymultiplier</string>
+        </entry>
+        <entry>
+          <string>applicationType</string>
+          <appType>IVERILOG</appType>
+        </entry>
+        <entry>
+          <string>externalInputs</string>
+          <string>X1:4,X2:4</string>
+        </entry>
+        <entry>
+          <string>Width</string>
+          <int>10</int>
+        </entry>
+        <entry>
+          <string>Code</string>
+          <string>module arraymultiplier(
+input [3:0]X1,
+input [3:0]X2,
+output[7:0]Y
+);
+    wire [3:0]a1,a2,a3,a4;wire c0;//c0是临时变量
+    assign c0=0;
+    //跟手算的乘法一样按位相与，得到每一行
+    assign a1[0]=X1[0]&amp;&amp;X2[0];
+    assign a1[1]=X1[1]&amp;&amp;X2[0];
+    assign a1[2]=X1[2]&amp;&amp;X2[0];
+    assign a1[3]=X1[3]&amp;&amp;X2[0];
+    
+    assign a2[0]=X1[0]&amp;&amp;X2[1];
+    assign a2[1]=X1[1]&amp;&amp;X2[1];
+    assign a2[2]=X1[2]&amp;&amp;X2[1];
+    assign a2[3]=X1[3]&amp;&amp;X2[1];
+    
+    assign a3[0]=X1[0]&amp;&amp;X2[2];
+    assign a3[1]=X1[1]&amp;&amp;X2[2];
+    assign a3[2]=X1[2]&amp;&amp;X2[2];
+    assign a3[3]=X1[3]&amp;&amp;X2[2];
+    
+    assign a4[0]=X1[0]&amp;&amp;X2[3];
+    assign a4[1]=X1[1]&amp;&amp;X2[3];
+    assign a4[2]=X1[2]&amp;&amp;X2[3];
+    assign a4[3]=X1[3]&amp;&amp;X2[3];
+    
+    wire C11,C12,C13,out11,out12,out13;//计算前两行输出与进位（C00=a1[0]）
+    one_full_add U0 (.X1(a1[1]),.X2(a2[0]),.Cin(c0),.Y(out11),.Cout(C11));
+    one_full_add U1 (.X1(a1[2]),.X2(a2[1]),.Cin(c0),.Y(out12),.Cout(C12));
+    one_full_add U2 (.X1(a1[3]),.X2(a2[2]),.Cin(c0),.Y(out13),.Cout(C13));
+    wire C21,C22,C23,out21,out22,out23;//计算第三行与前两行的和
+    one_full_add U3 (.X1(out12),.X2(a3[0]),.Cin(C11),.Y(out21),.Cout(C21));
+    one_full_add U4 (.X1(out13),.X2(a3[1]),.Cin(C12),.Y(out22),.Cout(C22));
+    one_full_add U5 (.X1(a2[3]),.X2(a3[2]),.Cin(C13),.Y(out23),.Cout(C23));
+    wire C31,C32,C33,out31,out32,out33;//计算第四行与前三行的和 
+    one_full_add U6 (.X1(out22),.X2(a4[0]),.Cin(C21),.Y(out31),.Cout(C31));
+    one_full_add U7 (.X1(out23),.X2(a4[1]),.Cin(C22),.Y(out32),.Cout(C32));
+    one_full_add U8 (.X1(a3[3]),.X2(a4[2]),.Cin(C23),.Y(out33),.Cout(C33));
+    wire C41,C42,C43,out41,out42,out43;//最后跟前面的不一样，进位信号当做本层下一个模块的一个输入
+    one_full_add U9 (.X1(out32),.X2(c0),.Cin(C31),.Y(out41),.Cout(C41));
+    one_full_add U10 (.X1(out33),.X2(C41),.Cin(C32),.Y(out42),.Cout(C42));
+    one_full_add U11 (.X1(a4[3]),.X2(C42),.Cin(C33),.Y(out43),.Cout(C43));
+    assign Y[7]=C43;
+    assign Y[6]=out43;
+    assign Y[5]=out42;
+    assign Y[4]=out41;
+    assign Y[3]=out31;
+    assign Y[2]=out21;
+    assign Y[1]=out11;
+    assign Y[0]=a1[0];
+endmodule
+//全加器
+module one_full_add(
+input X1,
+input X2,
+input Cin,
+output Y,
+output Cout
+);
+    assign {Cout,Y}=X1+X2+Cin;
+endmodule</string>
+        </entry>
+        <entry>
+          <string>externalOutputs</string>
+          <string>Y:8</string>
+        </entry>
+      </elementAttributes>
+      <pos x="420" y="180"/>
+    </visualElement>
+    <visualElement>
+      <elementName>In</elementName>
+      <elementAttributes>
+        <entry>
+          <string>Label</string>
+          <string>X1</string>
+        </entry>
+        <entry>
+          <string>Bits</string>
+          <int>4</int>
+        </entry>
+      </elementAttributes>
+      <pos x="300" y="180"/>
+    </visualElement>
+    <visualElement>
+      <elementName>In</elementName>
+      <elementAttributes>
+        <entry>
+          <string>Label</string>
+          <string>X2</string>
+        </entry>
+        <entry>
+          <string>Bits</string>
+          <int>4</int>
+        </entry>
+      </elementAttributes>
+      <pos x="300" y="220"/>
+    </visualElement>
+    <visualElement>
+      <elementName>Out</elementName>
+      <elementAttributes>
+        <entry>
+          <string>Label</string>
+          <string>Y</string>
+        </entry>
+        <entry>
+          <string>Bits</string>
+          <int>8</int>
+        </entry>
+      </elementAttributes>
+      <pos x="680" y="200"/>
+    </visualElement>
+    <visualElement>
+      <elementName>Testcase</elementName>
+      <elementAttributes>
+        <entry>
+          <string>Testdata</string>
+          <testData>
+            <dataString>X1     X2     Y
+0b1101 0b1011 0b10001111
+0b1001 0b0011 0b00011011</dataString>
+          </testData>
+        </entry>
+      </elementAttributes>
+      <pos x="600" y="280"/>
+    </visualElement>
+  </visualElements>
+  <wires>
+    <wire>
+      <p1 x="300" y="180"/>
+      <p2 x="420" y="180"/>
+    </wire>
+    <wire>
+      <p1 x="620" y="200"/>
+      <p2 x="680" y="200"/>
+    </wire>
+    <wire>
+      <p1 x="300" y="220"/>
+      <p2 x="420" y="220"/>
+    </wire>
+  </wires>
+  <measurementOrdering/>
+</circuit>

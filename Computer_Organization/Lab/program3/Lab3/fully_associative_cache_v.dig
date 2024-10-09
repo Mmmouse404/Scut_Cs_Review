@@ -1,0 +1,290 @@
+<?xml version="1.0" encoding="utf-8"?>
+<circuit>
+  <version>1</version>
+  <attributes/>
+  <visualElements>
+    <visualElement>
+      <elementName>External</elementName>
+      <elementAttributes>
+        <entry>
+          <string>applicationType</string>
+          <appType>IVERILOG</appType>
+        </entry>
+        <entry>
+          <string>Label</string>
+          <string>fully_associative_cache</string>
+        </entry>
+        <entry>
+          <string>externalInputs</string>
+          <string>address:8,write_enable,data_in:8,clk</string>
+        </entry>
+        <entry>
+          <string>Code</string>
+          <string>module fully_associative_cache(
+    input wire [7:0] address,
+    input wire write_enable,
+    input wire [7:0] data_in,
+    input clk,
+    output reg [7:0] data_out,
+    output reg hit,
+    output reg [1:0] row
+);
+parameter num_lines = 4; // cache的行数
+parameter tag_width = 4; // 标记位的宽度
+reg [7:0] cache_data [0:num_lines-1]; // cache数据存储
+reg [tag_width-1:0] tag [0:num_lines-1]; // 标记位存储
+reg valid [0:num_lines-1]; // 有效位
+reg [tag_width-1:0] tagcount [0:num_lines-1];//标记位计数
+reg [tag_width-1:0] address_tag;
+integer i,j,max;
+initial begin
+for(i=0;i&lt;4;i=i+1)begin
+   valid[i]=0;tagcount[i]=0;
+   end
+i=0;j=0;max=0;
+end
+
+always @(posedge clk) begin
+    data_out=0;address_tag = address[7:4]; // 从地址中提取标记位
+    hit = 0; row=0;// 初始化未命中
+    if (write_enable) begin // 如果是写操作
+        for (i = 0; i &lt; num_lines; i = i + 1) begin
+            if (!valid[i] || tag[i] == address_tag) begin // 找到一个无效行
+                cache_data[i] = data_in; // 写入数据
+                tag[i] = address_tag; // 更新标记位
+                valid[i] = 1; // 设置有效位
+                row=i;i=num_lines;//row行命中，剩下的行不做判断退出
+            end
+        end
+        if(i==num_lines)begin//此时未命中所有行都读完了，必须读入新的数据
+            for (j = num_lines-1; j &gt;= 0; j = j - 1) begin
+            if(max&lt;tagcount[j])begin
+               max=j;
+               end//找到计数最大的行数
+            end
+            cache_data[max] = data_in; // 写入数据
+                tag[max] = address_tag; // 更新标记位
+                valid[max] = 1; // 设置有效位
+                row=max;
+        end
+    end 
+    else begin // 如果是读操作
+        for (i = 0; i &lt; num_lines; i = i + 1) begin
+            if (valid[i] &amp;&amp; tag[i] == address_tag) begin // 如果命中
+                data_out = cache_data[i]; // 从cache中读取数据
+                hit = 1; // 设置命中标志
+                row=i;
+            end
+        end
+        
+        for (j=0;j&lt;num_lines;j=j+1 )begin
+             if(j!=row)begin
+             tagcount[j]=tagcount[j]+1;//当前行数计数
+             end
+             else tagcount[j]=0;
+        end
+    end
+end
+endmodule</string>
+        </entry>
+        <entry>
+          <string>externalOutputs</string>
+          <string>data_out:8,hit,row:2</string>
+        </entry>
+        <entry>
+          <string>Width</string>
+          <int>10</int>
+        </entry>
+      </elementAttributes>
+      <pos x="420" y="180"/>
+    </visualElement>
+    <visualElement>
+      <elementName>Testcase</elementName>
+      <elementAttributes>
+        <entry>
+          <string>Testdata</string>
+          <testData>
+            <dataString>address    write_enable data_in    data_out   hit row clk
+0b00010001 1            0b00011101 0b00000000 0 0 C
+0b00110010 1            0b00010001 0b00000000 0 1 C
+0b00010001 0            0b00011101 0b00011101 1 0 C
+0b00110010 0            0b00010001 0b00010001 1 1 C
+0b01010010 1            0b00010101 0b00000000 0 0b10 C
+0b01010010 1            0b00010111 0b00000000 0 0b10 C
+0b01010010 0            0b00010001 0b00010111 1 0b10 C
+0b01010010 0            0b00010001 0b00010111 1 0b10 C
+0b10010010 1            0b00010011 0b00000000 0 0b11 C
+0b10110010 1            0b00010011 0b00000000 0 0b11 C
+0b10110010 0            0b00010011 0b00010011 1 0b11 C</dataString>
+          </testData>
+        </entry>
+      </elementAttributes>
+      <pos x="620" y="60"/>
+    </visualElement>
+    <visualElement>
+      <elementName>Out</elementName>
+      <elementAttributes>
+        <entry>
+          <string>Label</string>
+          <string>data_out</string>
+        </entry>
+        <entry>
+          <string>Bits</string>
+          <int>8</int>
+        </entry>
+      </elementAttributes>
+      <pos x="820" y="180"/>
+    </visualElement>
+    <visualElement>
+      <elementName>Out</elementName>
+      <elementAttributes>
+        <entry>
+          <string>Label</string>
+          <string>hit</string>
+        </entry>
+      </elementAttributes>
+      <pos x="820" y="220"/>
+    </visualElement>
+    <visualElement>
+      <elementName>In</elementName>
+      <elementAttributes>
+        <entry>
+          <string>Label</string>
+          <string>address</string>
+        </entry>
+        <entry>
+          <string>Bits</string>
+          <int>8</int>
+        </entry>
+      </elementAttributes>
+      <pos x="300" y="180"/>
+    </visualElement>
+    <visualElement>
+      <elementName>In</elementName>
+      <elementAttributes>
+        <entry>
+          <string>Label</string>
+          <string>write_enable</string>
+        </entry>
+      </elementAttributes>
+      <pos x="300" y="220"/>
+    </visualElement>
+    <visualElement>
+      <elementName>In</elementName>
+      <elementAttributes>
+        <entry>
+          <string>Label</string>
+          <string>data_in</string>
+        </entry>
+        <entry>
+          <string>Bits</string>
+          <int>8</int>
+        </entry>
+      </elementAttributes>
+      <pos x="300" y="260"/>
+    </visualElement>
+    <visualElement>
+      <elementName>Out</elementName>
+      <elementAttributes>
+        <entry>
+          <string>Label</string>
+          <string>row</string>
+        </entry>
+        <entry>
+          <string>Bits</string>
+          <int>2</int>
+        </entry>
+      </elementAttributes>
+      <pos x="820" y="260"/>
+    </visualElement>
+    <visualElement>
+      <elementName>Clock</elementName>
+      <elementAttributes>
+        <entry>
+          <string>Label</string>
+          <string>clk</string>
+        </entry>
+      </elementAttributes>
+      <pos x="300" y="300"/>
+    </visualElement>
+  </visualElements>
+  <wires>
+    <wire>
+      <p1 x="320" y="240"/>
+      <p2 x="340" y="240"/>
+    </wire>
+    <wire>
+      <p1 x="400" y="240"/>
+      <p2 x="420" y="240"/>
+    </wire>
+    <wire>
+      <p1 x="780" y="260"/>
+      <p2 x="820" y="260"/>
+    </wire>
+    <wire>
+      <p1 x="300" y="260"/>
+      <p2 x="320" y="260"/>
+    </wire>
+    <wire>
+      <p1 x="300" y="180"/>
+      <p2 x="420" y="180"/>
+    </wire>
+    <wire>
+      <p1 x="620" y="180"/>
+      <p2 x="820" y="180"/>
+    </wire>
+    <wire>
+      <p1 x="620" y="200"/>
+      <p2 x="800" y="200"/>
+    </wire>
+    <wire>
+      <p1 x="320" y="200"/>
+      <p2 x="420" y="200"/>
+    </wire>
+    <wire>
+      <p1 x="340" y="220"/>
+      <p2 x="420" y="220"/>
+    </wire>
+    <wire>
+      <p1 x="800" y="220"/>
+      <p2 x="820" y="220"/>
+    </wire>
+    <wire>
+      <p1 x="620" y="220"/>
+      <p2 x="780" y="220"/>
+    </wire>
+    <wire>
+      <p1 x="300" y="220"/>
+      <p2 x="320" y="220"/>
+    </wire>
+    <wire>
+      <p1 x="300" y="300"/>
+      <p2 x="400" y="300"/>
+    </wire>
+    <wire>
+      <p1 x="800" y="200"/>
+      <p2 x="800" y="220"/>
+    </wire>
+    <wire>
+      <p1 x="320" y="200"/>
+      <p2 x="320" y="220"/>
+    </wire>
+    <wire>
+      <p1 x="320" y="240"/>
+      <p2 x="320" y="260"/>
+    </wire>
+    <wire>
+      <p1 x="400" y="240"/>
+      <p2 x="400" y="300"/>
+    </wire>
+    <wire>
+      <p1 x="340" y="220"/>
+      <p2 x="340" y="240"/>
+    </wire>
+    <wire>
+      <p1 x="780" y="220"/>
+      <p2 x="780" y="260"/>
+    </wire>
+  </wires>
+  <measurementOrdering/>
+</circuit>

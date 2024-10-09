@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="utf-8"?>
+<circuit>
+  <version>1</version>
+  <attributes/>
+  <visualElements>
+    <visualElement>
+      <elementName>External</elementName>
+      <elementAttributes>
+        <entry>
+          <string>applicationType</string>
+          <appType>IVERILOG</appType>
+        </entry>
+        <entry>
+          <string>Label</string>
+          <string>booth_multiplier1bit</string>
+        </entry>
+        <entry>
+          <string>externalInputs</string>
+          <string>multiplicand:4,multiplier:4</string>
+        </entry>
+        <entry>
+          <string>Code</string>
+          <string>module booth_multiplier1bit(//一位乘
+  input [3:0] multiplicand,//被乘数
+  input [3:0] multiplier,//乘数
+  output reg [7:0] product,
+  output [3:0]s
+);
+  reg [8:0] p;
+  reg [3:0] a;
+  reg [3:0] b;
+  reg [3:0] s;
+  always @* begin
+    a = multiplicand;b=multiplier;
+    s = (~b)+1&apos;b1; // 得到补码s
+    p[4:1]=a;p[0]=1&apos;b0;p[8:5]=4&apos;b0000;
+    repeat(4) begin
+      if(p[1:0]==1)begin//对应后面两位“01”情况，执行加乘数移位操作
+          p[8:5]=p[8:5]+b;
+          p=p&gt;&gt;1;
+          p[8]=p[7];
+      end
+      else if(p[1:0]==2)begin//对应后面两位“10”情况，执行减乘数移位操作（加补码）
+         p[8:5]=p[8:5]+s;
+         p=p&gt;&gt;1;
+         p[8]=p[7];
+      end
+      else begin//0011情况直接移位
+      p=p&gt;&gt;1;
+      p[8]=p[7];
+      end
+    end
+  product=p[8:1];
+  end
+endmodule</string>
+        </entry>
+        <entry>
+          <string>Width</string>
+          <int>10</int>
+        </entry>
+        <entry>
+          <string>externalOutputs</string>
+          <string>product:8,s:4</string>
+        </entry>
+      </elementAttributes>
+      <pos x="820" y="180"/>
+    </visualElement>
+    <visualElement>
+      <elementName>Testcase</elementName>
+      <elementAttributes>
+        <entry>
+          <string>Testdata</string>
+          <testData>
+            <dataString>multiplicand multiplier product s
+0b0100 0b0110 0b00011000 0b1010
+0b0100 0b0100 0b00010000 0b1100
+0b0101 0b0111 0b00100011 0b1001
+0b0001 0b0001 0b00000001 0b1111</dataString>
+          </testData>
+        </entry>
+      </elementAttributes>
+      <pos x="940" y="280"/>
+    </visualElement>
+    <visualElement>
+      <elementName>Out</elementName>
+      <elementAttributes>
+        <entry>
+          <string>Label</string>
+          <string>product</string>
+        </entry>
+        <entry>
+          <string>Bits</string>
+          <int>8</int>
+        </entry>
+        <entry>
+          <string>intFormat</string>
+          <intFormat>bin</intFormat>
+        </entry>
+      </elementAttributes>
+      <pos x="1080" y="180"/>
+    </visualElement>
+    <visualElement>
+      <elementName>In</elementName>
+      <elementAttributes>
+        <entry>
+          <string>Label</string>
+          <string>multiplicand</string>
+        </entry>
+        <entry>
+          <string>Bits</string>
+          <int>4</int>
+        </entry>
+        <entry>
+          <string>intFormat</string>
+          <intFormat>bin</intFormat>
+        </entry>
+      </elementAttributes>
+      <pos x="740" y="180"/>
+    </visualElement>
+    <visualElement>
+      <elementName>In</elementName>
+      <elementAttributes>
+        <entry>
+          <string>Label</string>
+          <string>multiplier</string>
+        </entry>
+        <entry>
+          <string>Bits</string>
+          <int>4</int>
+        </entry>
+        <entry>
+          <string>intFormat</string>
+          <intFormat>bin</intFormat>
+        </entry>
+      </elementAttributes>
+      <pos x="740" y="220"/>
+    </visualElement>
+    <visualElement>
+      <elementName>Out</elementName>
+      <elementAttributes>
+        <entry>
+          <string>Label</string>
+          <string>s</string>
+        </entry>
+        <entry>
+          <string>Bits</string>
+          <int>4</int>
+        </entry>
+      </elementAttributes>
+      <pos x="1080" y="220"/>
+    </visualElement>
+  </visualElements>
+  <wires>
+    <wire>
+      <p1 x="740" y="180"/>
+      <p2 x="820" y="180"/>
+    </wire>
+    <wire>
+      <p1 x="1020" y="180"/>
+      <p2 x="1080" y="180"/>
+    </wire>
+    <wire>
+      <p1 x="1020" y="200"/>
+      <p2 x="1060" y="200"/>
+    </wire>
+    <wire>
+      <p1 x="760" y="200"/>
+      <p2 x="820" y="200"/>
+    </wire>
+    <wire>
+      <p1 x="1060" y="220"/>
+      <p2 x="1080" y="220"/>
+    </wire>
+    <wire>
+      <p1 x="740" y="220"/>
+      <p2 x="760" y="220"/>
+    </wire>
+    <wire>
+      <p1 x="1060" y="200"/>
+      <p2 x="1060" y="220"/>
+    </wire>
+    <wire>
+      <p1 x="760" y="200"/>
+      <p2 x="760" y="220"/>
+    </wire>
+  </wires>
+  <measurementOrdering/>
+</circuit>

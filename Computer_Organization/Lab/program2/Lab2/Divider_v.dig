@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="utf-8"?>
+<circuit>
+  <version>1</version>
+  <attributes/>
+  <visualElements>
+    <visualElement>
+      <elementName>External</elementName>
+      <elementAttributes>
+        <entry>
+          <string>applicationType</string>
+          <appType>IVERILOG</appType>
+        </entry>
+        <entry>
+          <string>Label</string>
+          <string>Divider_v</string>
+        </entry>
+        <entry>
+          <string>externalInputs</string>
+          <string>dividend:8,divisor:4</string>
+        </entry>
+        <entry>
+          <string>Code</string>
+          <string>module Divider_v(//普通除法器
+  input [7:0] dividend,
+  input [3:0] divisor,
+  output reg [3:0] quotient,
+  output reg [3:0] remainder
+);
+    reg [7:0] temp_dividend;
+    reg [3:0] temp_quotient;
+    reg [3:0] temp_remainder;
+  always @(*) begin
+    temp_dividend = dividend;
+    temp_quotient = 4&apos;b0;
+    temp_remainder = 4&apos;b0;
+    for (integer i = 0; i &lt; 8; i = i + 1) begin
+      temp_remainder = {temp_remainder[2:0], temp_dividend[7]};//临时的余数
+      temp_dividend = temp_dividend &lt;&lt; 1;//每次除完都移1位
+      if (temp_remainder &gt;= divisor) begin
+        temp_remainder = temp_remainder - divisor;
+        temp_quotient[7-i] = 1;//商的最后需要倒过来表示，高位先得
+      end
+    end
+    quotient = temp_quotient;remainder = temp_remainder;
+  end
+endmodule</string>
+        </entry>
+        <entry>
+          <string>externalOutputs</string>
+          <string>quotient:4,remainder:4</string>
+        </entry>
+        <entry>
+          <string>Width</string>
+          <int>10</int>
+        </entry>
+      </elementAttributes>
+      <pos x="440" y="240"/>
+    </visualElement>
+    <visualElement>
+      <elementName>Out</elementName>
+      <elementAttributes>
+        <entry>
+          <string>Label</string>
+          <string>quotient</string>
+        </entry>
+        <entry>
+          <string>Bits</string>
+          <int>4</int>
+        </entry>
+      </elementAttributes>
+      <pos x="700" y="240"/>
+    </visualElement>
+    <visualElement>
+      <elementName>In</elementName>
+      <elementAttributes>
+        <entry>
+          <string>Label</string>
+          <string>dividend</string>
+        </entry>
+        <entry>
+          <string>Bits</string>
+          <int>8</int>
+        </entry>
+      </elementAttributes>
+      <pos x="300" y="240"/>
+    </visualElement>
+    <visualElement>
+      <elementName>Out</elementName>
+      <elementAttributes>
+        <entry>
+          <string>Label</string>
+          <string>remainder</string>
+        </entry>
+        <entry>
+          <string>Bits</string>
+          <int>4</int>
+        </entry>
+      </elementAttributes>
+      <pos x="700" y="280"/>
+    </visualElement>
+    <visualElement>
+      <elementName>In</elementName>
+      <elementAttributes>
+        <entry>
+          <string>Label</string>
+          <string>divisor</string>
+        </entry>
+        <entry>
+          <string>Bits</string>
+          <int>4</int>
+        </entry>
+      </elementAttributes>
+      <pos x="300" y="280"/>
+    </visualElement>
+    <visualElement>
+      <elementName>Testcase</elementName>
+      <elementAttributes>
+        <entry>
+          <string>Testdata</string>
+          <testData>
+            <dataString>dividend   divisor quotient remainder
+0b00001010 0b0101  0b0010   0b0000
+0b00001010 0b0100  0b0010   0b0010</dataString>
+          </testData>
+        </entry>
+      </elementAttributes>
+      <pos x="600" y="360"/>
+    </visualElement>
+  </visualElements>
+  <wires>
+    <wire>
+      <p1 x="300" y="240"/>
+      <p2 x="440" y="240"/>
+    </wire>
+    <wire>
+      <p1 x="640" y="240"/>
+      <p2 x="700" y="240"/>
+    </wire>
+    <wire>
+      <p1 x="320" y="260"/>
+      <p2 x="440" y="260"/>
+    </wire>
+    <wire>
+      <p1 x="640" y="260"/>
+      <p2 x="660" y="260"/>
+    </wire>
+    <wire>
+      <p1 x="300" y="280"/>
+      <p2 x="320" y="280"/>
+    </wire>
+    <wire>
+      <p1 x="660" y="280"/>
+      <p2 x="700" y="280"/>
+    </wire>
+    <wire>
+      <p1 x="320" y="260"/>
+      <p2 x="320" y="280"/>
+    </wire>
+    <wire>
+      <p1 x="660" y="260"/>
+      <p2 x="660" y="280"/>
+    </wire>
+  </wires>
+  <measurementOrdering/>
+</circuit>

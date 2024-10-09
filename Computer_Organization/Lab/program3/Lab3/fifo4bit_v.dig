@@ -1,0 +1,261 @@
+<?xml version="1.0" encoding="utf-8"?>
+<circuit>
+  <version>1</version>
+  <attributes/>
+  <visualElements>
+    <visualElement>
+      <elementName>External</elementName>
+      <elementAttributes>
+        <entry>
+          <string>applicationType</string>
+          <appType>IVERILOG</appType>
+        </entry>
+        <entry>
+          <string>Label</string>
+          <string>fifo4bit</string>
+        </entry>
+        <entry>
+          <string>externalInputs</string>
+          <string>data_in:4,push,pop,clk</string>
+        </entry>
+        <entry>
+          <string>Code</string>
+          <string>module fifo4bit(
+    input wire [3:0] data_in,
+    input wire push,
+    input wire pop,
+    input clk,
+    output reg [3:0] data_out,
+    output reg full,
+    output reg empty
+);
+
+reg [3:0] memory [0:7]; // FIFO内存，共8个位置
+integer head, tail; // FIFO头指针和尾指针
+
+initial begin
+    head = 0; // 初始化头指针
+    tail = 0; // 初始化尾指针
+    full = 0; // FIFO初始为空
+    empty = 1;
+end
+
+always @(posedge clk) begin
+    data_out=0;
+    if (push &amp;&amp; !full) begin // 如果要push数据且FIFO不满
+        memory[head] = data_in; // 将数据写入FIFO
+        head = head + 1; // 头指针加1
+        if (head == 8)begin // 如果头指针达到最大值
+            head = 0;
+            end // 回绕到数组开头
+        if (head == tail)begin // 如果头指针追上尾指针
+            full = 1; // FIFO满
+            end
+        else begin
+            full=0;
+            end
+        empty = 0; // FIFO不为空
+    end
+    if (pop &amp;&amp; !empty) begin // 如果要pop数据且FIFO不空
+        data_out = memory[tail]; // 从FIFO中取出数据
+        tail = tail + 1; // 尾指针加1
+        if (tail == 8)begin // 如果尾指针达到最大值
+            tail = 0;
+            end // 回绕到数组开头
+        if (head == tail)begin // 如果头指针赶上尾指针
+            empty = 1; // FIFO为空
+            end
+        else begin
+            empty=0;
+            end
+        full = 0; // FIFO不满
+    end
+end
+
+endmodule</string>
+        </entry>
+        <entry>
+          <string>externalOutputs</string>
+          <string>data_out:4,full,empty</string>
+        </entry>
+        <entry>
+          <string>Width</string>
+          <int>10</int>
+        </entry>
+      </elementAttributes>
+      <pos x="460" y="180"/>
+    </visualElement>
+    <visualElement>
+      <elementName>Testcase</elementName>
+      <elementAttributes>
+        <entry>
+          <string>Testdata</string>
+          <testData>
+            <dataString>data_in push pop data_out full empty clk
+0b0001  1    1   0b0001   0    1 C
+0b0010  1    0   0b0000   0    0 C
+0b0011  1    0   0b0000   0    0 C
+0b0100  1    0   0b0000   0    0 C
+0b0101  1    0   0b0000   0    0 C
+0b0110  1    0   0b0000   0    0 C
+0b0111  1    0   0b0000   0    0 C
+0b1000  1    0   0b0000   0    0 C
+0b1001  1    0   0b0000   1    0 C
+0b1001  0    1   0b0010   0    0 C
+0b1001  1    1   0b0011   0    0 C</dataString>
+          </testData>
+        </entry>
+      </elementAttributes>
+      <pos x="620" y="100"/>
+    </visualElement>
+    <visualElement>
+      <elementName>Out</elementName>
+      <elementAttributes>
+        <entry>
+          <string>Label</string>
+          <string>data_out</string>
+        </entry>
+        <entry>
+          <string>Bits</string>
+          <int>4</int>
+        </entry>
+      </elementAttributes>
+      <pos x="720" y="180"/>
+    </visualElement>
+    <visualElement>
+      <elementName>Out</elementName>
+      <elementAttributes>
+        <entry>
+          <string>Label</string>
+          <string>full</string>
+        </entry>
+      </elementAttributes>
+      <pos x="720" y="220"/>
+    </visualElement>
+    <visualElement>
+      <elementName>Out</elementName>
+      <elementAttributes>
+        <entry>
+          <string>Label</string>
+          <string>empty</string>
+        </entry>
+      </elementAttributes>
+      <pos x="720" y="260"/>
+    </visualElement>
+    <visualElement>
+      <elementName>In</elementName>
+      <elementAttributes>
+        <entry>
+          <string>Label</string>
+          <string>data_in</string>
+        </entry>
+        <entry>
+          <string>Bits</string>
+          <int>4</int>
+        </entry>
+      </elementAttributes>
+      <pos x="380" y="180"/>
+    </visualElement>
+    <visualElement>
+      <elementName>In</elementName>
+      <elementAttributes>
+        <entry>
+          <string>Label</string>
+          <string>push</string>
+        </entry>
+      </elementAttributes>
+      <pos x="380" y="220"/>
+    </visualElement>
+    <visualElement>
+      <elementName>In</elementName>
+      <elementAttributes>
+        <entry>
+          <string>Label</string>
+          <string>pop</string>
+        </entry>
+      </elementAttributes>
+      <pos x="380" y="260"/>
+    </visualElement>
+    <visualElement>
+      <elementName>Clock</elementName>
+      <elementAttributes>
+        <entry>
+          <string>Label</string>
+          <string>clk</string>
+        </entry>
+      </elementAttributes>
+      <pos x="380" y="300"/>
+    </visualElement>
+  </visualElements>
+  <wires>
+    <wire>
+      <p1 x="440" y="240"/>
+      <p2 x="460" y="240"/>
+    </wire>
+    <wire>
+      <p1 x="380" y="180"/>
+      <p2 x="460" y="180"/>
+    </wire>
+    <wire>
+      <p1 x="660" y="180"/>
+      <p2 x="720" y="180"/>
+    </wire>
+    <wire>
+      <p1 x="380" y="260"/>
+      <p2 x="420" y="260"/>
+    </wire>
+    <wire>
+      <p1 x="680" y="260"/>
+      <p2 x="720" y="260"/>
+    </wire>
+    <wire>
+      <p1 x="400" y="200"/>
+      <p2 x="460" y="200"/>
+    </wire>
+    <wire>
+      <p1 x="660" y="200"/>
+      <p2 x="700" y="200"/>
+    </wire>
+    <wire>
+      <p1 x="380" y="220"/>
+      <p2 x="400" y="220"/>
+    </wire>
+    <wire>
+      <p1 x="420" y="220"/>
+      <p2 x="460" y="220"/>
+    </wire>
+    <wire>
+      <p1 x="700" y="220"/>
+      <p2 x="720" y="220"/>
+    </wire>
+    <wire>
+      <p1 x="660" y="220"/>
+      <p2 x="680" y="220"/>
+    </wire>
+    <wire>
+      <p1 x="380" y="300"/>
+      <p2 x="440" y="300"/>
+    </wire>
+    <wire>
+      <p1 x="400" y="200"/>
+      <p2 x="400" y="220"/>
+    </wire>
+    <wire>
+      <p1 x="420" y="220"/>
+      <p2 x="420" y="260"/>
+    </wire>
+    <wire>
+      <p1 x="680" y="220"/>
+      <p2 x="680" y="260"/>
+    </wire>
+    <wire>
+      <p1 x="440" y="240"/>
+      <p2 x="440" y="300"/>
+    </wire>
+    <wire>
+      <p1 x="700" y="200"/>
+      <p2 x="700" y="220"/>
+    </wire>
+  </wires>
+  <measurementOrdering/>
+</circuit>

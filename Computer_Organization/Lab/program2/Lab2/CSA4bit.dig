@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="utf-8"?>
+<circuit>
+  <version>1</version>
+  <attributes/>
+  <visualElements>
+    <visualElement>
+      <elementName>External</elementName>
+      <elementAttributes>
+        <entry>
+          <string>Label</string>
+          <string>CSA4Bit</string>
+        </entry>
+        <entry>
+          <string>applicationType</string>
+          <appType>IVERILOG</appType>
+        </entry>
+        <entry>
+          <string>externalInputs</string>
+          <string>A:4,B:4,C0</string>
+        </entry>
+        <entry>
+          <string>Width</string>
+          <int>10</int>
+        </entry>
+        <entry>
+          <string>Code</string>
+          <string>module CSA4Bit(
+  input [3:0] A,
+  input [3:0] B,
+  input C0,
+  output [3:0] Sum,
+  output Cout
+);
+  //用于存储中间每一位AB算出的的G，P，C
+  wire [3:0] G;
+  wire [3:0] P;
+  // 1位加法，CSA1Bit函数在下方描述
+  CSA1Bit U1(.A(A[0]), .B(B[0]), .G(G[0]), .P(P[0]));
+  CSA1Bit U2(.A(A[1]), .B(B[1]), .G(G[1]), .P(P[1]));
+  CSA1Bit U3(.A(A[2]), .B(B[2]), .G(G[2]), .P(P[2]));
+  CSA1Bit U4(.A(A[3]), .B(B[3]), .G(G[3]), .P(P[3]));
+  // 考虑前一位进位得到的实际G、P、C
+  wire [3:0] C_prop;
+  //第1位
+  assign C_prop[0] = C0;
+  //第2位，C1 = G0+P0C0
+  assign C_prop[1] = G[0] | (P[0] &amp; C0);
+  //第3位，C2 = G1+P1C1 = G1+P1G0+P1P0C0
+  assign C_prop[2] = G[1] | (P[1] &amp; G[0]) | (P[1] &amp; P[0] &amp; C0);
+  //第4位，C3 = G2+P2C2 = G2+P2G1+P2P1G0+P2P1P0C0
+  assign C_prop[3] = G[2] | (P[2] &amp; G[1]) | (P[2] &amp; P[1] &amp; G[0]) | (P[2] &amp; P[1] &amp; P[0] &amp; C0);
+  //C4 = G3+P3C3 = G3+P3G2+P3P2G1+P3P2P1G0+P3P2P1P0C0
+  assign Cout = G[3]|(P[3]&amp;G[2])|(P[3]&amp;P[2]&amp;G[1])|(P[3]&amp;P[2]&amp;P[1]&amp;G[0])|(P[3]&amp;P[2]&amp;P[1]&amp;P[0]&amp;C0);
+  // 实际结果S=P^C
+  assign Sum[0] = A[0] ^ B[0] ^ C_prop[0];//实际的结果，当当前位a、b、进位有奇数个1时为1
+  assign Sum[1] = A[1] ^ B[1] ^ C_prop[1];
+  assign Sum[2] = A[2] ^ B[2] ^ C_prop[2];
+  assign Sum[3] = A[3] ^ B[3] ^ C_prop[3];
+
+endmodule
+//1位加法器
+
+module CSA1Bit(
+  input A,
+  input B,
+  output G,
+  output P
+);
+  assign G = A &amp; B;//是否产生进位
+  assign P = A ^ B;//当前位情况
+
+endmodule</string>
+        </entry>
+        <entry>
+          <string>externalOutputs</string>
+          <string>Sum:4,Cout</string>
+        </entry>
+      </elementAttributes>
+      <pos x="420" y="240"/>
+    </visualElement>
+    <visualElement>
+      <elementName>In</elementName>
+      <elementAttributes>
+        <entry>
+          <string>Label</string>
+          <string>A</string>
+        </entry>
+        <entry>
+          <string>Bits</string>
+          <int>4</int>
+        </entry>
+      </elementAttributes>
+      <pos x="280" y="240"/>
+    </visualElement>
+    <visualElement>
+      <elementName>In</elementName>
+      <elementAttributes>
+        <entry>
+          <string>Label</string>
+          <string>B</string>
+        </entry>
+        <entry>
+          <string>Bits</string>
+          <int>4</int>
+        </entry>
+      </elementAttributes>
+      <pos x="280" y="280"/>
+    </visualElement>
+    <visualElement>
+      <elementName>Out</elementName>
+      <elementAttributes>
+        <entry>
+          <string>Label</string>
+          <string>Sum</string>
+        </entry>
+        <entry>
+          <string>Bits</string>
+          <int>4</int>
+        </entry>
+      </elementAttributes>
+      <pos x="680" y="240"/>
+    </visualElement>
+    <visualElement>
+      <elementName>Out</elementName>
+      <elementAttributes>
+        <entry>
+          <string>Label</string>
+          <string>Cout</string>
+        </entry>
+      </elementAttributes>
+      <pos x="680" y="280"/>
+    </visualElement>
+    <visualElement>
+      <elementName>In</elementName>
+      <elementAttributes>
+        <entry>
+          <string>Label</string>
+          <string>C0</string>
+        </entry>
+      </elementAttributes>
+      <pos x="280" y="320"/>
+    </visualElement>
+    <visualElement>
+      <elementName>Testcase</elementName>
+      <elementAttributes>
+        <entry>
+          <string>Testdata</string>
+          <testData>
+            <dataString>A      B      C0 Sum    Cout
+0b1001 0b1010 0  0b0011 1
+0b0101 0b1010 0  0b1111 0
+0b0011 0b0010 0  0b0101 0</dataString>
+          </testData>
+        </entry>
+      </elementAttributes>
+      <pos x="560" y="360"/>
+    </visualElement>
+  </visualElements>
+  <wires>
+    <wire>
+      <p1 x="280" y="240"/>
+      <p2 x="420" y="240"/>
+    </wire>
+    <wire>
+      <p1 x="620" y="240"/>
+      <p2 x="680" y="240"/>
+    </wire>
+    <wire>
+      <p1 x="280" y="320"/>
+      <p2 x="400" y="320"/>
+    </wire>
+    <wire>
+      <p1 x="620" y="260"/>
+      <p2 x="660" y="260"/>
+    </wire>
+    <wire>
+      <p1 x="300" y="260"/>
+      <p2 x="420" y="260"/>
+    </wire>
+    <wire>
+      <p1 x="660" y="280"/>
+      <p2 x="680" y="280"/>
+    </wire>
+    <wire>
+      <p1 x="280" y="280"/>
+      <p2 x="300" y="280"/>
+    </wire>
+    <wire>
+      <p1 x="400" y="280"/>
+      <p2 x="420" y="280"/>
+    </wire>
+    <wire>
+      <p1 x="400" y="280"/>
+      <p2 x="400" y="320"/>
+    </wire>
+    <wire>
+      <p1 x="660" y="260"/>
+      <p2 x="660" y="280"/>
+    </wire>
+    <wire>
+      <p1 x="300" y="260"/>
+      <p2 x="300" y="280"/>
+    </wire>
+  </wires>
+  <measurementOrdering/>
+</circuit>

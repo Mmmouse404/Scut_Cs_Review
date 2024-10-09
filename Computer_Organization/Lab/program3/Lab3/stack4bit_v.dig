@@ -1,0 +1,221 @@
+<?xml version="1.0" encoding="utf-8"?>
+<circuit>
+  <version>1</version>
+  <attributes/>
+  <visualElements>
+    <visualElement>
+      <elementName>External</elementName>
+      <elementAttributes>
+        <entry>
+          <string>applicationType</string>
+          <appType>IVERILOG</appType>
+        </entry>
+        <entry>
+          <string>Label</string>
+          <string>stack4bit</string>
+        </entry>
+        <entry>
+          <string>externalInputs</string>
+          <string>data_in:4,pushpop,clk</string>
+        </entry>
+        <entry>
+          <string>Code</string>
+          <string>module stack4bit(
+    input wire [3:0] data_in,
+    input wire pushpop,
+    input clk,
+    output reg [3:0] data_out,
+    output reg full,
+    output reg empty
+);
+
+reg [3:0] memory [0:7]; // 堆栈内存，共8个位置
+reg top; // 堆栈指针
+
+initial begin
+    top = 0; // 初始化堆栈指针
+    full = 0; // 堆栈初始为空
+    empty = 1;
+end
+
+always @(posedge clk) begin
+    data_out=0;
+    if (pushpop &amp;&amp; !full) begin // 如果要push数据且堆栈不满
+        memory[top] = data_in; // 将数据写入堆栈
+        top = top + 1&apos;b1; // 堆栈指针加1
+        if (top == 7)begin // 如果堆栈指针达到最大值
+            full = 1;
+            end // 堆栈满
+        empty = 0; // 堆栈不为空
+    end else if (!pushpop &amp;&amp; !empty) begin // 如果要pop数据且堆栈不空
+        top = top - 1&apos;b1; // 堆栈指针减1
+        data_out = memory[top]; // 从堆栈中取出数据
+        if (top == 0)begin // 如果堆栈指针为0
+            empty = 1;
+            end // 堆栈为空
+        full = 0; // 堆栈不满
+    end
+end
+
+endmodule</string>
+        </entry>
+        <entry>
+          <string>externalOutputs</string>
+          <string>data_out:4,full,empty</string>
+        </entry>
+        <entry>
+          <string>Width</string>
+          <int>10</int>
+        </entry>
+      </elementAttributes>
+      <pos x="320" y="180"/>
+    </visualElement>
+    <visualElement>
+      <elementName>Testcase</elementName>
+      <elementAttributes>
+        <entry>
+          <string>Testdata</string>
+          <testData>
+            <dataString>clk data_in pushpop data_out full empty
+C 0b1001  1   0b0000   0    0
+C 0b1010  0   0b1001   0    1
+C 0b0101  1   0b0000   0    0
+C 0b0001  0   0b0101   0    1
+C 0b0101  1   0b0000   0    0
+C 0b0110  1   0b0000   0    0
+C 0b0001  0   0b0110   0    0
+C 0b0001  0   0b0101   0    1</dataString>
+          </testData>
+        </entry>
+      </elementAttributes>
+      <pos x="520" y="100"/>
+    </visualElement>
+    <visualElement>
+      <elementName>In</elementName>
+      <elementAttributes>
+        <entry>
+          <string>Label</string>
+          <string>data_in</string>
+        </entry>
+        <entry>
+          <string>Bits</string>
+          <int>4</int>
+        </entry>
+      </elementAttributes>
+      <pos x="200" y="180"/>
+    </visualElement>
+    <visualElement>
+      <elementName>In</elementName>
+      <elementAttributes>
+        <entry>
+          <string>Label</string>
+          <string>pushpop</string>
+        </entry>
+      </elementAttributes>
+      <pos x="200" y="220"/>
+    </visualElement>
+    <visualElement>
+      <elementName>Out</elementName>
+      <elementAttributes>
+        <entry>
+          <string>Label</string>
+          <string>data_out</string>
+        </entry>
+        <entry>
+          <string>Bits</string>
+          <int>4</int>
+        </entry>
+      </elementAttributes>
+      <pos x="620" y="180"/>
+    </visualElement>
+    <visualElement>
+      <elementName>Out</elementName>
+      <elementAttributes>
+        <entry>
+          <string>Label</string>
+          <string>full</string>
+        </entry>
+      </elementAttributes>
+      <pos x="620" y="220"/>
+    </visualElement>
+    <visualElement>
+      <elementName>Out</elementName>
+      <elementAttributes>
+        <entry>
+          <string>Label</string>
+          <string>empty</string>
+        </entry>
+      </elementAttributes>
+      <pos x="620" y="260"/>
+    </visualElement>
+    <visualElement>
+      <elementName>Clock</elementName>
+      <elementAttributes>
+        <entry>
+          <string>Label</string>
+          <string>clk</string>
+        </entry>
+      </elementAttributes>
+      <pos x="200" y="260"/>
+    </visualElement>
+  </visualElements>
+  <wires>
+    <wire>
+      <p1 x="520" y="180"/>
+      <p2 x="620" y="180"/>
+    </wire>
+    <wire>
+      <p1 x="200" y="180"/>
+      <p2 x="320" y="180"/>
+    </wire>
+    <wire>
+      <p1 x="580" y="260"/>
+      <p2 x="620" y="260"/>
+    </wire>
+    <wire>
+      <p1 x="200" y="260"/>
+      <p2 x="240" y="260"/>
+    </wire>
+    <wire>
+      <p1 x="520" y="200"/>
+      <p2 x="600" y="200"/>
+    </wire>
+    <wire>
+      <p1 x="220" y="200"/>
+      <p2 x="320" y="200"/>
+    </wire>
+    <wire>
+      <p1 x="600" y="220"/>
+      <p2 x="620" y="220"/>
+    </wire>
+    <wire>
+      <p1 x="520" y="220"/>
+      <p2 x="580" y="220"/>
+    </wire>
+    <wire>
+      <p1 x="200" y="220"/>
+      <p2 x="220" y="220"/>
+    </wire>
+    <wire>
+      <p1 x="240" y="220"/>
+      <p2 x="320" y="220"/>
+    </wire>
+    <wire>
+      <p1 x="240" y="220"/>
+      <p2 x="240" y="260"/>
+    </wire>
+    <wire>
+      <p1 x="580" y="220"/>
+      <p2 x="580" y="260"/>
+    </wire>
+    <wire>
+      <p1 x="600" y="200"/>
+      <p2 x="600" y="220"/>
+    </wire>
+    <wire>
+      <p1 x="220" y="200"/>
+      <p2 x="220" y="220"/>
+    </wire>
+  </wires>
+  <measurementOrdering/>
+</circuit>

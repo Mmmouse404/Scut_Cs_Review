@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="utf-8"?>
+<circuit>
+  <version>1</version>
+  <attributes/>
+  <visualElements>
+    <visualElement>
+      <elementName>In</elementName>
+      <elementAttributes>
+        <entry>
+          <string>Label</string>
+          <string>data</string>
+        </entry>
+        <entry>
+          <string>Bits</string>
+          <int>10</int>
+        </entry>
+        <entry>
+          <string>intFormat</string>
+          <intFormat>bin</intFormat>
+        </entry>
+      </elementAttributes>
+      <pos x="60" y="200"/>
+    </visualElement>
+    <visualElement>
+      <elementName>External</elementName>
+      <elementAttributes>
+        <entry>
+          <string>applicationType</string>
+          <appType>IVERILOG</appType>
+        </entry>
+        <entry>
+          <string>Label</string>
+          <string>CRC</string>
+        </entry>
+        <entry>
+          <string>externalInputs</string>
+          <string>data:10</string>
+        </entry>
+        <entry>
+          <string>Code</string>
+          <string>module CRC(
+input [9:0] data,//信息码10位
+output reg [3:0] crc,//crc-4校验码
+output work
+    );
+    reg work=0;
+    wire [3:0] crc_temp;//crc校验结果寄存器
+    reg [13:0] temp    ;//移位数据用于除法运算
+    parameter gx=5&apos;b1_0011;//生成多项式
+    always@(*)begin
+                begin
+                crc=4&apos;d0;  		
+    		temp={data[9:0],4&apos;b0};
+                work=1;
+                end
+    		if(temp[13]==1&apos;d1)begin //高位为1 进行异或
+    				temp[13:9]=temp[13:9]^gx;//从高到低依次取5位（和gx同位宽）进行异或
+    		end
+    		if(temp[12]==1&apos;d1)begin
+    				temp[12:8]=temp[12:8]^gx;
+    		end
+    		if(temp[11]==1&apos;d1)begin
+    				temp[11:7]=temp[11:7]^gx;
+    		end
+    		if(temp[10]==1&apos;d1)begin
+    				temp[10:6]=temp[10:6]^gx;
+    		end
+    		if(temp[9]==1&apos;d1)begin
+    				temp[9:5]=temp[9:5]^gx;
+    		end
+    		if(temp[8]==1&apos;d1)begin
+    				temp[8:4]=temp[8:4]^gx;
+    		end
+    		if(temp[7]==1&apos;d1)begin
+    				temp[7:3]=temp[7:3]^gx;
+    		end
+    		if(temp[6]==1&apos;d1)begin
+    				temp[6:2]=temp[6:2]^gx;
+    		end
+    		if(temp[5]==1&apos;d1)begin
+    				temp[5:1]=temp[5:1]^gx;
+    		end
+    		if(temp[4]==1&apos;d1)begin
+    				temp[4:0]=temp[4:0]^gx;
+    		end
+    		begin
+    			crc=temp[3:0];//取出余数
+    		end
+    end
+    assign crc_temp={data[9:0],crc[3:0]};
+endmodule</string>
+        </entry>
+        <entry>
+          <string>externalOutputs</string>
+          <string>work,crc:4</string>
+        </entry>
+        <entry>
+          <string>Width</string>
+          <int>10</int>
+        </entry>
+      </elementAttributes>
+      <pos x="160" y="200"/>
+    </visualElement>
+    <visualElement>
+      <elementName>Testcase</elementName>
+      <elementAttributes>
+        <entry>
+          <string>Testdata</string>
+          <testData>
+            <dataString>data          crc    work
+0b1011000111  0b1101 1
+0b1101010101  0b1111 1
+0b1101010110  0b1010 1</dataString>
+          </testData>
+        </entry>
+      </elementAttributes>
+      <pos x="480" y="40"/>
+    </visualElement>
+    <visualElement>
+      <elementName>Out</elementName>
+      <elementAttributes>
+        <entry>
+          <string>Label</string>
+          <string>crc</string>
+        </entry>
+        <entry>
+          <string>intFormat</string>
+          <intFormat>bin</intFormat>
+        </entry>
+        <entry>
+          <string>Bits</string>
+          <int>4</int>
+        </entry>
+      </elementAttributes>
+      <pos x="460" y="220"/>
+    </visualElement>
+    <visualElement>
+      <elementName>Out</elementName>
+      <elementAttributes>
+        <entry>
+          <string>Label</string>
+          <string>work</string>
+        </entry>
+      </elementAttributes>
+      <pos x="460" y="180"/>
+    </visualElement>
+  </visualElements>
+  <wires>
+    <wire>
+      <p1 x="420" y="180"/>
+      <p2 x="460" y="180"/>
+    </wire>
+    <wire>
+      <p1 x="60" y="200"/>
+      <p2 x="160" y="200"/>
+    </wire>
+    <wire>
+      <p1 x="360" y="200"/>
+      <p2 x="420" y="200"/>
+    </wire>
+    <wire>
+      <p1 x="360" y="220"/>
+      <p2 x="420" y="220"/>
+    </wire>
+    <wire>
+      <p1 x="420" y="220"/>
+      <p2 x="460" y="220"/>
+    </wire>
+    <wire>
+      <p1 x="420" y="220"/>
+      <p2 x="420" y="280"/>
+    </wire>
+    <wire>
+      <p1 x="420" y="180"/>
+      <p2 x="420" y="200"/>
+    </wire>
+  </wires>
+  <measurementOrdering/>
+</circuit>

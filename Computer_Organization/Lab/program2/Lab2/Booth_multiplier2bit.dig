@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="utf-8"?>
+<circuit>
+  <version>1</version>
+  <attributes/>
+  <visualElements>
+    <visualElement>
+      <elementName>External</elementName>
+      <elementAttributes>
+        <entry>
+          <string>applicationType</string>
+          <appType>IVERILOG</appType>
+        </entry>
+        <entry>
+          <string>Label</string>
+          <string>booth_multiplier2bit</string>
+        </entry>
+        <entry>
+          <string>externalInputs</string>
+          <string>multiplicand:4,multiplier:4</string>
+        </entry>
+        <entry>
+          <string>Code</string>
+          <string>module booth_multiplier2bit(//二位乘
+  input [3:0] multiplicand,//被乘数
+  input [3:0] multiplier,//乘数
+  output reg [7:0] product,
+  output [3:0]s
+);
+  reg [8:0] p;
+  reg [3:0] a;
+  reg [3:0] b;
+  reg [3:0] s;
+  always @* begin
+    a = multiplicand;b=multiplier;
+    s = (~b)+1&apos;b1; // 得到补码s
+    p[4:1]=a;p[0]=1&apos;b0;p[8:5]=4&apos;b0000;
+    repeat(2) begin
+      if(p[0]+p[1]-p[2]-p[2]==1)begin//执行加1倍乘数移位操作
+          p[8:5]=p[8:5]+b;
+      end
+      else if(p[0]+p[1]-p[2]-p[2]==2)begin//执行加2倍乘数移位操作
+          p[8:5]=p[8:5]+b+b;
+      end
+      else if(p[0]+p[1]-p[2]-p[2]==-1)begin//执行减1倍乘数移位操作
+          p[8:5]=p[8:5]-b;
+      end
+      else if(p[0]+p[1]-p[2]-p[2]==-2)begin//执行减2倍乘数移位操作
+          p[8:5]=p[8:5]-b-b;
+      end
+      p=p&gt;&gt;2;
+      p[7]=p[6];
+      p[8]=p[6];
+    end
+  p[8]=0;p[7]=0;//前面的逻辑移位多移了一次，最后补0，以免出现错误
+  product=p[8:1];
+  end
+endmodule</string>
+        </entry>
+        <entry>
+          <string>Width</string>
+          <int>10</int>
+        </entry>
+        <entry>
+          <string>externalOutputs</string>
+          <string>product:8,s:4</string>
+        </entry>
+      </elementAttributes>
+      <pos x="820" y="180"/>
+    </visualElement>
+    <visualElement>
+      <elementName>Testcase</elementName>
+      <elementAttributes>
+        <entry>
+          <string>Testdata</string>
+          <testData>
+            <dataString>multiplicand multiplier product s
+0b0100 0b0110 0b00011000 0b1010
+0b0100 0b0100 0b00010000 0b1100
+0b0101 0b0111 0b00100011 0b1001
+0b0001 0b0001 0b00000001 0b1111</dataString>
+          </testData>
+        </entry>
+      </elementAttributes>
+      <pos x="940" y="280"/>
+    </visualElement>
+    <visualElement>
+      <elementName>Out</elementName>
+      <elementAttributes>
+        <entry>
+          <string>Label</string>
+          <string>product</string>
+        </entry>
+        <entry>
+          <string>Bits</string>
+          <int>8</int>
+        </entry>
+        <entry>
+          <string>intFormat</string>
+          <intFormat>bin</intFormat>
+        </entry>
+      </elementAttributes>
+      <pos x="1080" y="180"/>
+    </visualElement>
+    <visualElement>
+      <elementName>In</elementName>
+      <elementAttributes>
+        <entry>
+          <string>Label</string>
+          <string>multiplicand</string>
+        </entry>
+        <entry>
+          <string>Bits</string>
+          <int>4</int>
+        </entry>
+        <entry>
+          <string>intFormat</string>
+          <intFormat>bin</intFormat>
+        </entry>
+      </elementAttributes>
+      <pos x="740" y="180"/>
+    </visualElement>
+    <visualElement>
+      <elementName>In</elementName>
+      <elementAttributes>
+        <entry>
+          <string>Label</string>
+          <string>multiplier</string>
+        </entry>
+        <entry>
+          <string>Bits</string>
+          <int>4</int>
+        </entry>
+        <entry>
+          <string>intFormat</string>
+          <intFormat>bin</intFormat>
+        </entry>
+      </elementAttributes>
+      <pos x="740" y="220"/>
+    </visualElement>
+    <visualElement>
+      <elementName>Out</elementName>
+      <elementAttributes>
+        <entry>
+          <string>Label</string>
+          <string>s</string>
+        </entry>
+        <entry>
+          <string>Bits</string>
+          <int>4</int>
+        </entry>
+      </elementAttributes>
+      <pos x="1080" y="220"/>
+    </visualElement>
+  </visualElements>
+  <wires>
+    <wire>
+      <p1 x="740" y="180"/>
+      <p2 x="820" y="180"/>
+    </wire>
+    <wire>
+      <p1 x="1020" y="180"/>
+      <p2 x="1080" y="180"/>
+    </wire>
+    <wire>
+      <p1 x="1020" y="200"/>
+      <p2 x="1060" y="200"/>
+    </wire>
+    <wire>
+      <p1 x="760" y="200"/>
+      <p2 x="820" y="200"/>
+    </wire>
+    <wire>
+      <p1 x="1060" y="220"/>
+      <p2 x="1080" y="220"/>
+    </wire>
+    <wire>
+      <p1 x="740" y="220"/>
+      <p2 x="760" y="220"/>
+    </wire>
+    <wire>
+      <p1 x="1060" y="200"/>
+      <p2 x="1060" y="220"/>
+    </wire>
+    <wire>
+      <p1 x="760" y="200"/>
+      <p2 x="760" y="220"/>
+    </wire>
+  </wires>
+  <measurementOrdering/>
+</circuit>

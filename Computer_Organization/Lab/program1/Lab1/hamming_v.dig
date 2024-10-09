@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="utf-8"?>
+<circuit>
+  <version>1</version>
+  <attributes/>
+  <visualElements>
+    <visualElement>
+      <elementName>Splitter</elementName>
+      <elementAttributes>
+        <entry>
+          <string>Input Splitting</string>
+          <string>10</string>
+        </entry>
+        <entry>
+          <string>Output Splitting</string>
+          <string>10</string>
+        </entry>
+      </elementAttributes>
+      <pos x="380" y="140"/>
+    </visualElement>
+    <visualElement>
+      <elementName>In</elementName>
+      <elementAttributes>
+        <entry>
+          <string>Label</string>
+          <string>A</string>
+        </entry>
+        <entry>
+          <string>Bits</string>
+          <int>6</int>
+        </entry>
+      </elementAttributes>
+      <pos x="100" y="180"/>
+    </visualElement>
+    <visualElement>
+      <elementName>Out</elementName>
+      <elementAttributes>
+        <entry>
+          <string>Label</string>
+          <string>X</string>
+        </entry>
+        <entry>
+          <string>Bits</string>
+          <int>10</int>
+        </entry>
+      </elementAttributes>
+      <pos x="420" y="140"/>
+    </visualElement>
+    <visualElement>
+      <elementName>External</elementName>
+      <elementAttributes>
+        <entry>
+          <string>applicationType</string>
+          <appType>IVERILOG</appType>
+        </entry>
+        <entry>
+          <string>Label</string>
+          <string>hamming</string>
+        </entry>
+        <entry>
+          <string>externalInputs</string>
+          <string>data_in:6,num:10</string>
+        </entry>
+        <entry>
+          <string>Code</string>
+          <string>module hamming (
+output [9: 0]data_out,
+output [3: 0]Error,
+input [9: 0] num,
+input [5: 0] data_in
+);
+wire [3:0]error;
+	assign data_out[9]=data_in[5]^data_in[4]^data_in[2]^data_in[1];
+        assign data_out[8]=data_in[5]^data_in[3]^data_in[2]^data_in[0];
+        assign data_out[6]=data_in[4]^data_in[3]^data_in[2];
+        assign data_out[2]=data_in[1]^data_in[0];
+        assign data_out[7]=data_in[5];
+        assign data_out[5]=data_in[4];
+        assign data_out[4]=data_in[3];
+        assign data_out[3]=data_in[2];
+        assign data_out[1]=data_in[1];
+        assign data_out[0]=data_in[0];
+        assign error[0]=num[0]^num[2]^num[4]^num[6]^num[8];
+        assign error[1]=num[1]^num[2]^num[5]^num[6]^num[9];
+        assign error[2]=num[3]^num[4]^num[5]^num[6];
+        assign error[3]=num[7]^num[8]^num[9];
+        assign Error=error;
+endmodule</string>
+        </entry>
+        <entry>
+          <string>externalOutputs</string>
+          <string>data_out:10,Error:4</string>
+        </entry>
+        <entry>
+          <string>Width</string>
+          <int>10</int>
+        </entry>
+      </elementAttributes>
+      <pos x="140" y="180"/>
+    </visualElement>
+    <visualElement>
+      <elementName>Testcase</elementName>
+      <elementAttributes>
+        <entry>
+          <string>Testdata</string>
+          <testData>
+            <dataString>A B X error
+0 0x2E4 0 0
+1 0x2E5 0x105 1
+2 0x2E6 0x206 2
+3 0x2E0 0x303 3
+4 0x2EC 0x348 4
+5 0x2F4 0x24D 5
+7 0x2A4 0x4B 7</dataString>
+          </testData>
+        </entry>
+      </elementAttributes>
+      <pos x="240" y="40"/>
+    </visualElement>
+    <visualElement>
+      <elementName>In</elementName>
+      <elementAttributes>
+        <entry>
+          <string>Label</string>
+          <string>B</string>
+        </entry>
+        <entry>
+          <string>Bits</string>
+          <int>10</int>
+        </entry>
+        <entry>
+          <string>intFormat</string>
+          <intFormat>hex</intFormat>
+        </entry>
+      </elementAttributes>
+      <pos x="100" y="240"/>
+    </visualElement>
+    <visualElement>
+      <elementName>Out</elementName>
+      <elementAttributes>
+        <entry>
+          <string>Label</string>
+          <string>error</string>
+        </entry>
+        <entry>
+          <string>Bits</string>
+          <int>4</int>
+        </entry>
+      </elementAttributes>
+      <pos x="420" y="200"/>
+    </visualElement>
+  </visualElements>
+  <wires>
+    <wire>
+      <p1 x="360" y="160"/>
+      <p2 x="380" y="160"/>
+    </wire>
+    <wire>
+      <p1 x="100" y="240"/>
+      <p2 x="120" y="240"/>
+    </wire>
+    <wire>
+      <p1 x="100" y="180"/>
+      <p2 x="140" y="180"/>
+    </wire>
+    <wire>
+      <p1 x="340" y="180"/>
+      <p2 x="360" y="180"/>
+    </wire>
+    <wire>
+      <p1 x="340" y="200"/>
+      <p2 x="420" y="200"/>
+    </wire>
+    <wire>
+      <p1 x="120" y="200"/>
+      <p2 x="140" y="200"/>
+    </wire>
+    <wire>
+      <p1 x="400" y="140"/>
+      <p2 x="420" y="140"/>
+    </wire>
+    <wire>
+      <p1 x="360" y="160"/>
+      <p2 x="360" y="180"/>
+    </wire>
+    <wire>
+      <p1 x="120" y="200"/>
+      <p2 x="120" y="240"/>
+    </wire>
+    <wire>
+      <p1 x="380" y="140"/>
+      <p2 x="380" y="160"/>
+    </wire>
+  </wires>
+  <measurementOrdering/>
+</circuit>

@@ -1,0 +1,93 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="源文件">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="头文件">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
+    </Filter>
+    <Filter Include="资源文件">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="头文件\Easyx">
+      <UniqueIdentifier>{ebaa3d39-abf1-499d-9082-6421fa621f3c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\Easyx">
+      <UniqueIdentifier>{d07091be-1564-4a2e-b546-164fa8061152}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="头文件\Personand">
+      <UniqueIdentifier>{a413b5aa-8ca1-440b-870e-32bda1d6ddcc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\Personand">
+      <UniqueIdentifier>{59c784be-1737-42c3-a397-577047422a8a}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="main.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Management.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Window.cpp">
+      <Filter>源文件\Easyx</Filter>
+    </ClCompile>
+    <ClCompile Include="BasicX.cpp">
+      <Filter>源文件\Easyx</Filter>
+    </ClCompile>
+    <ClCompile Include="Button.cpp">
+      <Filter>源文件\Easyx</Filter>
+    </ClCompile>
+    <ClCompile Include="Schoolmate.cpp">
+      <Filter>源文件\Personand</Filter>
+    </ClCompile>
+    <ClCompile Include="Friend.cpp">
+      <Filter>源文件\Personand</Filter>
+    </ClCompile>
+    <ClCompile Include="Person.cpp">
+      <Filter>源文件\Personand</Filter>
+    </ClCompile>
+    <ClCompile Include="Relative.cpp">
+      <Filter>源文件\Personand</Filter>
+    </ClCompile>
+    <ClCompile Include="Workmate.cpp">
+      <Filter>源文件\Personand</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Management.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Configure.h">
+      <Filter>头文件\Easyx</Filter>
+    </ClInclude>
+    <ClInclude Include="Window.h">
+      <Filter>头文件\Easyx</Filter>
+    </ClInclude>
+    <ClInclude Include="BasicX.h">
+      <Filter>头文件\Easyx</Filter>
+    </ClInclude>
+    <ClInclude Include="Button.h">
+      <Filter>头文件\Easyx</Filter>
+    </ClInclude>
+    <ClInclude Include="Schoolmate.h">
+      <Filter>头文件\Personand</Filter>
+    </ClInclude>
+    <ClInclude Include="Friend.h">
+      <Filter>头文件\Personand</Filter>
+    </ClInclude>
+    <ClInclude Include="Person.h">
+      <Filter>头文件\Personand</Filter>
+    </ClInclude>
+    <ClInclude Include="Relative.h">
+      <Filter>头文件\Personand</Filter>
+    </ClInclude>
+    <ClInclude Include="Workmate.h">
+      <Filter>头文件\Personand</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>

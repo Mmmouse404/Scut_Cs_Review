@@ -1,0 +1,27 @@
+1~5 DABBD
+6~10 BACAD
+11~15 CCBDC
+16~20 CDBBD
+21~25 AACCC
+26~30 CDDCC
+31~35 DCBCA
+36~40 CDCBA
+
+1. 静态 动态
+2. javac java
+3. .class
+4. 抽象 final
+5. implements
+6. 匿名内部类
+7. AB,AB
+8. 编码 编译 运行
+9. javac java
+10. import java.util.*;
+import java.util.concurrent.*;
+11. 抽象 final
+12. 120
+13. 
+14. this
+15. 基本数据类型（值类型） 包装类型（引用数据类型）
+16. 字节流 字符流
+17. Internet.class java Internet 

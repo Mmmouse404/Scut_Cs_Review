@@ -1,0 +1,78 @@
+四
+1. Hello!I love JAVA.You?
+2. 
+false 
+false 
+false 
+true
+3. 
+Johnson
+count=1
+4.
+in superClass:y=30
+in subClass:y=50
+In superClass.doPrint()
+in subClass.doPrint()
+super.y=30  sub.y=50
+5.
+6 1 12 12
+6.
+**I love this game**
+100
+7.
+Constructor w/ int arg only, petalCount= 47
+String & int args
+default constructor (no args)
+petalCount = 47 s = hi
+8.
+Inside main()
+Cup(1)
+Cup(2)
+f(99)
+9.
+Creating new Tree that is 0 feet tall
+Tree is 0 feet tall
+overloaded method: tree is .......
+Creating new Tree that is 1 feet tall
+Tree is 1 feet tall
+overloaded method
+Creating new Tree that is 2 feet tall
+Tree is 2 feet tall
+overloaded method
+Creating new Tree that is 3 feet tall
+Tree is 3 feet tall
+overloaded method
+Creating new Tree that is 4 feet tall
+Tree is 4 feet tall
+overloaded method
+Planting a seedling
+10.
+The program output is 13.0
+11.
+LargeCup(1)
+Shelf()
+f1(1)
+LargeCup(3)
+LargeCup(4)
+
+Cupshelf()
+f1(2)
+Creating new Cupshelf1() in main
+Cupshelf()
+f1(2)
+Creating new Cupshelf2() in main
+Cupshelf()
+f1(2)
+f2(1)
+f3(1)
+12.
+A count=1
+B count=1
+13.
+inside main
+Loading Candy
+After creating Candy
+Loading Gum
+After Class.forName("Gum")
+Loading Cookie
+After creating Cookie

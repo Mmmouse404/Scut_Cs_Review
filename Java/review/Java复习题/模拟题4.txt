@@ -1,0 +1,86 @@
+interface CountArea{
+	 void count();
+}
+public class Rectangle {
+	private int width;
+	private int height;
+	public class RectangleChange {
+		void changeValue (int i,int j) {
+			width=i;
+			height=j;
+		}
+	}
+	void outputArea(final int number) {
+		final class InnerOuput implements CountArea {
+			public void  count() {
+				System.out.println("Total area is "+(width*height*number)+", width is "+width+", height is "+height+", number is "+number);
+			}
+		}
+		InnerOuput I=new InnerOuput();
+		I.count();
+	}
+	public static void main(String [] args){
+		Rectangle R=new Rectangle();
+		Rectangle.RectangleChange r=R.new RectangleChange();
+		r.changeValue(10,8);
+		R.outputArea(5);
+	}
+	
+}
+
+
+Total area is 400, width is 10, height is 8, number is 5
+
+
+
+
+package Server;
+// Server_Socket.java
+import java.io.*;
+import java.net.*;
+public class Server_Socket {
+public static final int PORT=6060;
+public static void main(String[]args)throws IOException{
+	ServerSocket s=new ServerSocket(PORT);
+	try{
+		Socket socket =s.accept();
+		try{
+			BufferedReader in=new BufferedReader(new InputStreamReader(socket.getInputStream()));
+			PrintWriter out=new PrintWriter(new BufferedWriter(new OutputStreamWriter(socket.getOutputStream())),true);
+			while(true){
+				String str=in.readLine();
+				if(str.equals("END"))
+					break;
+				System.out.println(str);
+				out.println("Nice Work!");
+			}
+		}
+		finally{
+			socket.close();
+			}
+	}
+	finally{
+		s.close();
+	}
+	}
+}
+// Client_Socket.java
+import java.net.*;
+import java.io.*;
+public class Client_Socket {
+public static void main(String[]args)throws IOException{
+	InetAddress addr=InetAddress.getByName(null);
+	Socket socket=new Socket(addr,Server_Socket.PORT);
+	try{
+		BufferedReader in=new BufferedReader(new InputStreamReader(socket.getInputStream()));
+		PrintWriter out=new PrintWriter(new BufferedWriter(new OutputStreamWriter(socket.getOutputStream())),true);
+		out.println("Hello java!");
+		String str=in.readLine();
+		System.out.println(str);
+		out.println("END");
+		}
+	finally{
+	socket.close();
+	}
+}
+}

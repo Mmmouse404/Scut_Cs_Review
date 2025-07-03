@@ -1,0 +1,509 @@
+/* 基础样式 */
+:root {
+    --primary: #2c3e50;       /* 深蓝主色 */
+    --secondary: #3498db;     /* 明亮点缀色 */
+    --accent: #e74c3c;        /* 强调色 */
+    --background: #f8f9fa;    /* 背景色 */
+    --text: #2c3e50;         /* 正文颜色 */
+    --success: #27ae60;       /* 涨/成功色 */
+    --danger: #e74c3c;        /* 跌/错误色 */
+    --border-radius: 10px;    /* 统一圆角 */
+    --box-shadow: 0 4px 20px rgba(0,0,0,0.08); /* 柔和阴影 */
+}
+body {
+    font-family: 'Segoe UI', system-ui, sans-serif;
+    line-height: 1.6;
+    color: var(--text);
+}
+
+
+/* 卡片2.0版本 */
+.card {
+    background: white;
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
+    padding: 1rem;
+    transition: transform 0.2s ease;
+    margin-top: 0;  /* 移除默认的上边距 */
+    padding-top: 0.5rem;  /* 减少顶部内边距 */
+}
+
+.card:hover {
+    transform: translateY(-3px);
+}
+
+
+/* 表单样式 */
+.form-group {
+    margin-bottom: 1.5rem;
+    position: relative;
+}
+
+label {
+    display: block;
+    margin-bottom: 5px;
+}
+
+input, select {
+    border: 2px solid #e0e6ed;
+    border-radius: 8px;
+    padding: 0.8rem;
+    transition: border-color 0.3s ease;
+}
+
+input:focus {
+    border-color: var(--secondary);
+    outline: none;
+}
+
+.btn {
+    background: var(--secondary);
+    padding: 0.8rem 1.5rem;
+    border-radius: 50px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(52, 152, 219, 0.3);
+}
+/* 表格美化 */
+table {
+    border-collapse: separate;
+    border-spacing: 0;
+    width: 100%;
+    background: white;
+    border-radius: var(--border-radius);
+    overflow: hidden;
+}
+
+th, td {
+    padding: 12px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+th {
+    background-color: #f8f9fa;
+}
+tr:last-child td {
+    border-bottom: none;
+}
+/* 标签页样式 */
+.market-tabs {
+    margin-bottom: 15px;
+}
+
+/* 标签页现代风格 */
+.tab {
+    padding: 0.8rem 2rem;
+    border-radius: 50px;
+    background: #f0f4f8;
+    margin-right: 1rem;
+    transition: all 0.2s ease;
+}
+
+.tab.active {
+    background: var(--secondary);
+    color: white;
+    box-shadow: 0 3px 10px rgba(52, 152, 219, 0.2);
+}
+
+/* 图表容器 */
+#stockChart {
+    width: 100%;
+    height: 400px;
+}
+/* 交易状态样式 */
+.loss { color: #28a745; }
+.profit { color: #dc3545; }
+.buy { color: #007bff; }
+.sell { color: #dc3545; }
+/* 涨跌颜色 */
+.down { color: #28a745; }
+.up { color: #dc3545; }
+.alert {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    padding: 15px 25px;
+    background: #fff;
+    border-radius: 5px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    border-left: 4px solid #007bff;
+    animation: slideIn 0.3s ease-out;
+}
+
+@keyframes slideIn {
+    from { transform: translateX(100%); }
+    to { transform: translateX(0); }
+}
+/* 股票代码可点击样式 */
+.stock-code {
+    color: #007bff;
+    cursor: pointer;
+    text-decoration: underline;
+}
+
+.stock-code:hover {
+    color: #0056b3;
+}
+
+
+
+/* 选中行高亮 */
+#userMarketTable tr:hover {
+    background-color: #f8f9fa;
+}
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0,0,0,0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.modal-content {
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    min-width: 300px;
+}
+
+.stock-code {
+    cursor: pointer;
+    color: #007bff;
+    text-decoration: underline;
+}
+.price-hint {
+    font-size: 1.1rem;
+    font-weight: 600;
+    padding: 0.3rem 0.8rem;
+    border-radius: 6px;
+    background: rgba(52, 152, 219, 0.1);
+}
+/* 价格更新动画 */
+.price-update {
+    transition: all 0.5s ease;
+    transform: scale(1.1);
+}
+
+/* 颜色状态 */
+#priceDisplay[data-last-price] {
+    font-weight: bold;
+    padding: 2px 5px;
+    border-radius: 3px;
+}
+.chart-container canvas {
+    width: 100% !important;
+    height: 100% !important;
+}
+/* 图表容器样式 */
+.chart-container {
+    border: 2px solid rgba(52, 152, 219, 0.1);
+    border-radius: var(--border-radius);
+    padding: 1.5rem;
+    background: white;
+}
+
+/* 控制按钮样式 */
+.chart-controls {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    z-index: 100;
+    display: flex;
+    gap: 10px;
+}
+
+.refresh-btn {
+    background: #2196F3;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.refresh-btn:hover {
+    background: #1976D2;
+    transform: translateY(-1px);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+/* 新版容器布局 */
+.container {
+    display: grid;
+    grid-template-columns: 1.2fr 1fr; /* 左栏更宽 */
+    gap: 24px;
+    max-width: 1600px;
+    padding: 24px;
+    min-height: 100vh;
+}
+
+header {
+    grid-column: 1 / -1;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.left-column {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+.right-column {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+.realtime-quote {
+    flex: 1; /* 占据较少的空间 */
+}
+
+.stock-chart {
+    flex: 5; /* 占据较多的空间 */
+}
+/* style.css */
+.action-menu {
+    position: absolute;
+    background: white;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 5px;
+    z-index: 1000;
+    width: 50px; /* 设置菜单宽度 */
+    top: auto; /* 确保菜单不在顶部 */
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+}
+
+.action-menu .menu-item {
+    padding: 5px 10px;
+    cursor: pointer;
+    border-bottom: 1px solid #eee;
+    font-size: 14px; /* 减小菜单项字体大小 */
+}
+
+.action-menu .menu-item:last-child {
+    border-bottom: none;
+}
+
+.action-menu .menu-item:hover {
+    background-color: #f0f8ff;
+}
+
+/* 调整输入框的样式 */
+input[type="number"] {
+    -moz-appearance: textfield;
+    width: calc(100% - 20px); /* 调整输入框宽度，为按钮留出空间 */
+    padding-right: 30px; /* 为箭头留出空间 */
+    text-align: right; /* 文本右对齐 */
+}
+input[type="number"]::-webkit-inner-spin-button, 
+input[type="number"]::-webkit-outer-spin-button { 
+    height: auto;
+    font-size: 25px; /* 增大箭头的字体大小 */
+}
+
+/* 调整输入框的样式 */
+input[type="number"] {
+    padding-right: 30px; /* 为箭头留出空间 */
+    text-align: left; /* 文本右对齐 */
+}
+/* 输入框组样式 */
+.input-group {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+/* 输入框组内的按钮样式 */
+.input-group-append .btn {
+    background: #007bff;
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-left: 8px; /* 与输入框的间距 */
+    font-size: 15px;
+}
+
+.input-group-append .btn:hover {
+    background: #0056b3;
+}
+
+.input-group-append .btn:active {
+    transform: translateY(1px);
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+/* 主色调和辅助色 */
+:root {
+    --primary-color: #007bff; /* 主色调 */
+    --secondary-color: #6c757d; /* 辅助色 */
+    --background-color: #f8f9fa; /* 背景色 */
+    --text-color: #343a40; /* 文字颜色 */
+}
+
+body {
+    font-family: 'Roboto', sans-serif;
+    background: var(--background-color);
+    color: var(--text-color);
+    margin: 0;
+    padding: 20px;
+}
+
+
+.btn {
+    background: var(--primary-color);
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.btn:hover {
+    background: #0056b3;
+}
+
+.btn:active {
+    transform: translateY(1px);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+}
+
+th, td {
+    padding: 12px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+th {
+    background-color: #f8f9fa;
+}
+
+.stock-code {
+    color: var(--primary-color);
+    cursor: pointer;
+    text-decoration: underline;
+}
+
+.stock-code:hover {
+    color: #0056b3;
+}
+
+.price-hint {
+    color: var(--primary-color);
+    margin-left: 10px;
+    font-weight: bold;
+}
+
+/* 图表样式 */
+#stockChart {
+    width: 100%;
+    height: 400px;
+    border-radius: 12px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.chart-controls {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    z-index: 100;
+    display: flex;
+    gap: 10px;
+}
+
+.refresh-btn {
+    background: var(--primary-color);
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.refresh-btn:hover {
+    background: #1976d2;
+    transform: translateY(-1px);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* 暗色模式切换按钮 */
+.dark-mode-toggle {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    padding: 10px 20px;
+    background: var(--primary-color);
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+/* 暗色模式样式 */
+body.dark-mode {
+    --background-color: #212529;
+    --text-color: #ffffff;
+    --primary-color: #007bff;
+    --secondary-color: #6c757d;
+}
+
+body.dark-mode .card {
+    background: #343a40;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+body.dark-mode .btn {
+    background: #007bff;
+}
+
+body.dark-mode .btn:hover {
+    background: #0056b3;
+}
+/* 响应式布局 */
+@media (max-width: 768px) {
+    .container {
+        grid-template-columns: 1fr;
+        padding: 16px;
+    }
+    
+    .left-column, 
+    .right-column {
+        height: auto;
+        grid-template-rows: auto;
+    }
+    
+    .realtime-quote,
+    .stock-chart {
+        min-height: 300px;
+    }
+}
+
+/* 加载动画 */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.card {
+    animation: fadeIn 0.6s ease-out;
+}

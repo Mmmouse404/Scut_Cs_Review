@@ -1,0 +1,137 @@
+/* styles.css */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    min-width: 600px;
+    min-height: 100vh;
+}
+
+header {
+    position: relative;
+    background-color: #009999;
+    color: #FFF;
+    text-align: center;
+    padding: 30px;
+    font-size: 1.2em;
+}
+
+.header-logo {
+    position: absolute;
+    left: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    height: 40px;
+    cursor: pointer;
+    transition: transform 0.3s;
+}
+
+.header-logo:hover {
+    transform: translateY(-50%) scale(1.1);
+}
+
+header h1 {
+    padding-left: 60px;
+}
+
+.container {
+    flex: 1;
+    padding: 0 200px;
+    overflow: hidden;
+}
+
+.main {
+    width: 100%;
+    float: left;
+    background: #CCFFFF;
+    padding: 20px;
+    min-height: 400px;
+}
+
+.left, .right {
+    width: 200px;
+    float: left;
+    background: #66CCCC;
+    padding: 20px;
+    min-height: 400px;
+    position: relative;
+}
+
+.left {
+    margin-left: -100%;
+    left: -200px;
+}
+
+.right {
+    margin-left: -200px;
+    right: -200px;
+}
+
+.main, .left, .right {
+    min-height: 600px;
+    padding: 30px;
+}
+
+footer {
+    clear: both;
+    background-color: #7ed1c2;
+    color: #FFF;
+    text-align: center;
+    padding: 20px;
+    margin-top: auto;
+}
+
+.rat-image {
+    max-width: 100%;
+    height: auto;
+    display: block;
+    margin: 15px auto;
+    border-radius: 8px;
+    max-height: 300px;
+}
+
+.modal {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: white;
+    padding: 25px;
+    border-radius: 10px;
+    box-shadow: 0 0 20px rgba(0,0,0,0.3);
+    z-index: 1000;
+    max-width: 500px;
+    width: 90%;
+}
+
+.modal-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.5);
+    z-index: 999;
+}
+
+.modal-close {
+    float: right;
+    cursor: pointer;
+    font-size: 1.2em;
+}
+
+.left li, .right li {
+    cursor: pointer;
+    padding: 8px;
+    transition: background 0.3s;
+    border-radius: 4px;
+}
+
+.left li:hover, .right li:hover {
+    background: rgb(99, 165, 153);
+}

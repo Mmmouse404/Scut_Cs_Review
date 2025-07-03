@@ -1,0 +1,82 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>测试 JS 调用 WCF 接口</title>
+</head>
+<body>
+
+<h3>本页面展示了利用AJAX与服务端交互的简单例子</h3>
+<h3>本页面如果能正常运行，说明与服务端的连接是正常的，否则请检查服务端</h3>
+
+<fieldset>
+        <legend>新用户注册（获取用户输入，传给服务端）</legend>
+        <br />
+        用户名：<input type="text" id="p1" /><br />
+        密码：<input type="text" id="p2" />
+        <br /><br />
+        <input type="button" value="注册" id="btnReg" />
+    </fieldset>
+
+    <hr />
+
+    <fieldset>
+        <legend>获取大盘行情（从服务端取数据，并显示第一行数据）</legend>
+        <br />
+        <input type="button" value="获取大盘行情" id="btnMarket" />
+    </fieldset>
+
+    <script src="js/jquery-3.6.0.min.js"></script>
+    <script>
+
+        $(function () {
+
+            $('#btnReg').click(function () {
+
+                var p1value = $('#p1').val();
+                var p2value = $('#p2').val();
+
+                $.ajax({
+                    type: "get", //这行代码可以取消，因为 jsonp 只能是 get 请求
+                    dataType: "json",
+                    url: "http://localhost:12345/regist?username=" + p1value + "&pwd=" + p2value,
+                    success: function (data) {
+			if(data) {
+				alert("用户（" + p1value + "）注册成功");
+			}
+			else {
+				alert("注册出错");
+			}
+                    },
+                    error: function(xhr, status, error) {
+                       var errMsg = status + "\n" +
+				error + "\n" +
+				"HTTP Status: " + xhr.status + " (" + xhr.statusText + ")\n" +
+				 "Response Text: " + xhr.responseText;
+			alert(errMsg);
+                    }
+                });
+            });
+
+            $('#btnMarket').click(function () {
+
+                $.ajax({
+                    dataType: "json",
+                    url: "http://localhost:12345/getMarketPrice",
+                    success: function (data) {
+                        alert("代码：" + data[0].Code + "，名称：" + data[0].Name + "，价格：" +data[0].Price);
+                    },
+                   error: function(xhr, status, error) {
+                       var errMsg = status + "\n" +
+				error + "\n" +
+				"HTTP Status: " + xhr.status + " (" + xhr.statusText + ")\n" +
+				 "Response Text: " + xhr.responseText;
+			alert(errMsg);
+                    }
+                });
+            });
+        })
+
+    </script>
+</body>
+</html>

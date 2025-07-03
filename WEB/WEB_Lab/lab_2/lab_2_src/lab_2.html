@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>数据工具集</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f0f4f8;
+            color: #2d3748;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .section {
+            margin: 25px 0;
+            padding: 25px;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            transition: transform 0.2s;
+        }
+
+        .section:hover {
+            transform: translateY(-2px);
+        }
+
+        h3 {
+            color: #2b6cb0;
+            margin-bottom: 15px;
+            font-size: 1.4em;
+            border-bottom: 2px solid #bee3f8;
+            padding-bottom: 8px;
+        }
+
+        button {
+            background: linear-gradient(135deg, #4299e1, #3182ce);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 500;
+            margin: 8px 8px 8px 0;
+        }
+
+        button:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 6px rgba(66, 153, 225, 0.3);
+            background: linear-gradient(135deg, #3182ce, #2b6cb0);
+        }
+
+        .result {
+            margin: 15px 0;
+            padding: 15px;
+            background: #ebf8ff;
+            border-radius: 8px;
+            color: #2b6cb0;
+            line-height: 1.6;
+            border: 1px solid #bee3f8;
+        }
+
+        /* 不同功能按钮颜色区分 */
+        button:nth-of-type(1) { background: linear-gradient(135deg, #48bb78, #38a169); }
+        button:nth-of-type(1):hover { background: linear-gradient(135deg, #38a169, #2f855a); }
+        
+        button:nth-of-type(3) { background: linear-gradient(135deg, #f6ad55, #ed8936); }
+        button:nth-of-type(3):hover { background: linear-gradient(135deg, #ed8936, #dd6b20); }
+
+        .highlight {
+            color: #c53030;
+            font-weight: bold;
+        }
+        .clear-btn {
+            background: linear-gradient(135deg, #f56565, #c53030) !important;
+        }
+        .clear-btn:hover {
+            background: linear-gradient(135deg, #c53030, #9b2c2c) !important;
+        }
+    </style>
+</head>
+<body>
+    <div class="section">
+        <h3>📅 日期格式转换工具</h3>
+        <button onclick="generateRandomDate()">生成随机日期</button>
+        <button onclick="convertDateFormat()">转换为中文格式</button>
+        <button onclick="clearDateRecords()" class="clear-btn">清除记录</button>
+        <div class="result" id="dateResult">等待生成日期...</div>
+    </div>
+
+    <div class="section">
+        <h3>🧮 数组合并与排序工具</h3>
+        <button onclick="generateArrays()">生成随机数组</button>
+        <button onclick="mergeAndSort()">合并并排序</button>
+        <button onclick="clearArrayRecords()" class="clear-btn">清除记录</button>
+        <div class="result" id="arrayResult">等待生成数组数据...</div>
+    </div>
+
+    <script>
+        function generateRandomDate() {
+            // 生成2000-2023范围内的随机年份
+            const year = Math.floor(Math.random() * 24) + 2000;
+            // 生成1-12的随机月份
+            const month = Math.floor(Math.random() * 12) + 1;
+            // 生成1-28的随机日期（简化处理）
+            const day = Math.floor(Math.random() * 28) + 1;
+            
+            currentDate = new Date(year, month - 1, day);
+            const formattedDate = `${year}-${month.toString().padStart(2, '0')}-${day.toString().padStart(2, '0')}`;
+            document.getElementById('dateResult').innerHTML = `📆 生成的随机日期：<span class="highlight">${formattedDate}</span>`;
+        }
+
+        function convertDateFormat() {
+            if (!currentDate) {
+                alert('请先使用按钮A生成日期');
+                return;
+            }
+
+            const weekdays = ['日', '一', '二', '三', '四', '五', '六'];
+            const formattedDate = 
+                `${currentDate.getFullYear()}年${(currentDate.getMonth() + 1).toString().padStart(2, '0')}月` +
+                `${currentDate.getDate().toString().padStart(2, '0')}日 星期${weekdays[currentDate.getDay()]}`;
+            document.getElementById('dateResult').innerHTML += `<br>🔄 转换结果：<span class="highlight">${formattedDate}</span>`;
+        }
+
+        function generateArrays() {
+            arraySet1 = Array.from({length: 10}, () => Math.floor(Math.random() * 100));
+            arraySet2 = Array.from({length: 10}, () => Math.floor(Math.random() * 100));
+            document.getElementById('arrayResult').innerHTML = 
+                `📊 数组1：<span class="highlight">${arraySet1.join(', ')}</span><br>
+                 📈 数组2：<span class="highlight">${arraySet2.join(', ')}</span>`;
+        }
+
+        function mergeAndSort() {
+            if (arraySet1.length === 0 || arraySet2.length === 0) {
+                alert('请先使用按钮C生成数组');
+                return;
+            }
+
+            const mergedArray = [...arraySet1, ...arraySet2].sort((a, b) => a - b);
+            document.getElementById('arrayResult').innerHTML += 
+                `<br>✅ 合并排序结果：<span class="highlight">${mergedArray.join(', ')}</span>`;
+        }
+        function clearDateRecords() {
+            currentDate = null;
+            document.getElementById('dateResult').innerHTML = '🗑️ 日期记录已清除';
+            setTimeout(() => {
+                document.getElementById('dateResult').innerHTML = '等待生成日期...';
+            }, 1000);
+        }
+    
+        function clearArrayRecords() {
+            arraySet1 = [];
+            arraySet2 = [];
+            document.getElementById('arrayResult').innerHTML = '🗑️ 数组记录已清除';
+            setTimeout(() => {
+                document.getElementById('arrayResult').innerHTML = '等待生成数组数据...';
+            }, 1000);
+        }
+        let currentDate = null;
+        let arraySet1 = [];
+        let arraySet2 = [];
+    </script>
+</body>
+</html>
+

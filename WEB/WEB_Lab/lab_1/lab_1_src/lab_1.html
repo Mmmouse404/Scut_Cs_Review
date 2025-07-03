@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>啮齿动物科普</title>
+    <link rel="stylesheet" href="style.css">
+    
+</head>
+<body>
+     <!-- 模态框结构 -->
+     <div class="modal-overlay" id="modalOverlay"></div>
+     <div class="modal" id="infoModal">
+         <span class="modal-close" onclick="closeModal()">×</span>
+         <h2 id="modalTitle"></h2>
+         <p id="modalContent"></p>
+     </div>
+    <header>
+        <img src="./mouse.png" alt="刷新图标" class="header-logo" onclick="window.location.reload()">
+        <h1>鼠类生物学特征</h1>
+    </header>
+
+    <div class="container">
+        <div class="main">
+            <!-- 默认内容 -->
+            <img src="./mouse-1.jpg" alt="老鼠示意图" class="rat-image">
+            <p class="intro-1">
+                老鼠（学名：Muridae）是啮齿目鼠科动物的统称，具有以下典型特征：
+                <br>
+                <br>终生生长的门齿
+                <br>敏锐的嗅觉和听觉
+                <br>超强的适应能力
+                <br>杂食性饮食习惯
+            </p>
+            <p class="intro-2">
+                <br>
+                这些小型哺乳动物拥有惊人的繁殖能力，雌鼠妊娠期仅19-21天，每年可产仔5-10胎。
+                其门齿每年可生长13-15厘米，通过啃咬硬物维持牙齿长度，这也是它们破坏力强的主要原因。
+            </p>
+        </div>
+
+        <div class="left">
+            <h3>常见鼠种</h3>
+            <ul>
+                <br>
+                <li onclick="updateContent('brown')">褐家鼠</li>
+                <li onclick="updateContent('black')">黑家鼠</li>
+                <li onclick="updateContent('small')">小家鼠</li>
+                <li onclick="updateContent('field')">田鼠属</li>
+            </ul>
+        </div>
+
+        <div class="right">
+            <h3>生存特征</h3>
+            <ul>
+                <br>
+                <li onclick="showRatInfo('night')">夜行性动物</li>
+                <li onclick="showRatInfo('group')">群体社会结构</li>
+                <li onclick="showRatInfo('memory')">超强记忆力</li>
+                <li onclick="showRatInfo('swim')">游泳能力突出</li>
+            </ul>
+        </div>
+    </div>
+
+    <footer>
+        <p>© 2025 非专业非人类啮齿动物研究学会</p>
+    </footer>
+
+    <script>
+        const contentData = {
+            brown: {
+                img: "./mouse-1.jpeg",
+                title: "褐家鼠（Rattus norvegicus）",
+                desc: "体型较大的家栖鼠类，体长18-25厘米。栖息于下水道、仓库等潮湿环境。杂食性，擅长游泳，全年均可繁殖，每胎产仔6-12只。"
+            },
+            black: {
+                img: "./mouse-2.jpeg",
+                title: "黑家鼠（Rattus rattus）",
+                desc: "又名屋顶鼠，体长16-22厘米。偏好干燥环境，善于攀爬，常在建筑物上层活动。主要食用植物性食物，传播多种疾病。"
+            },
+            small: {
+                img: "./mouse-3.jpeg",
+                title: "小家鼠（Mus musculus）",
+                desc: "小型鼠类，体长6-9厘米。适应性强，可栖息于多种环境。繁殖能力极强，妊娠期仅19天，每年可产仔8胎。"
+            },
+            field: {
+                img: "./mouse-4.jpeg",
+                title: "田鼠属（Microtus）",
+                desc: "主要栖息于田野的鼠类，体长10-18厘米。群体生活，擅长挖掘复杂的地道系统。以植物根茎为食，对农业有较大危害。"
+            }
+        };
+        // 鼠类信息数据
+        const ratData = {
+            night: {
+                title: "夜行性特征",
+                content: "鼠类主要在黄昏到黎明期间活动，其视网膜含有大量视杆细胞，具有优秀的夜视能力。夜间活动可有效避开多数天敌，活动高峰通常在日落后2小时和日出前1小时。"
+            },
+            group: {
+                title: "群体社会结构",
+                content: "鼠群具有严格的社会等级制度，优势个体享有优先交配权和进食权。群体通过气味标记沟通，可形成包含数十个成员的复杂社会网络，具有集体防御和育幼行为。"
+            },
+            memory: {
+                title: "记忆与学习能力",
+                content: "鼠类拥有出色的空间记忆能力，可在复杂环境中建立认知地图。对新事物表现出既警惕又好奇的'新物反应'，能记住有毒食物的特征并传播规避信息。"
+            },
+            swim: {
+                title: "游泳能力突出",
+                content: "多数鼠类擅长游泳，褐家鼠可连续游泳72小时、潜水30秒，能在抽水马桶管道中逆流而上。其游泳时速可达1.5公里，趾间有蹼状结构帮助划水。"
+            }
+        };
+        // 显示信息模态框
+        function showRatInfo(type) {
+            const modal = document.getElementById('infoModal');
+            const overlay = document.getElementById('modalOverlay');
+            const data = ratData[type];
+
+            document.getElementById('modalTitle').textContent = data.title;
+            document.getElementById('modalContent').textContent = data.content;
+            
+            modal.style.display = 'block';
+            overlay.style.display = 'block';
+        }
+        // 关闭模态框
+        function closeModal() {
+            document.getElementById('infoModal').style.display = 'none';
+            document.getElementById('modalOverlay').style.display = 'none';
+        }
+
+        // 点击遮罩层关闭
+        document.getElementById('modalOverlay').onclick = closeModal;
+
+        function updateContent(type) {
+            const main = document.querySelector('.main');
+            const data = contentData[type];
+            main.innerHTML = `
+                <img src="${data.img}" alt="${data.title}" class="rat-image">
+                <h2>${data.title}</h2>
+                <p>${data.desc}</p>
+            `;
+        }
+    </script>
+</body>
+</html>

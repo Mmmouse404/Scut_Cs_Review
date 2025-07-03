@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>股票交易系统 - 游客</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="container">
+    <!-- 注册表单 -->
+    <div class="card">
+        <h2>注册</h2>
+        <form id="registerForm">
+            <div class="form-group">
+                <label>用户名：</label>
+                <input type="text" id="regUsername" required>
+            </div>
+            <div class="form-group">
+                <label>密码：</label>
+                <input type="password" id="regPassword" required>
+            </div>
+            <div class="form-group">
+                <label>确认密码：</label>
+                <input type="password" id="regConfirm" required>
+            </div>
+            <button type="submit" class="btn">注册</button>
+        </form>
+    </div>
+
+    <!-- 登录表单 -->
+    <div class="card">
+        <h2>登录</h2>
+        <form id="loginForm">
+            <div class="form-group">
+                <label>用户名：</label>
+                <input type="text" id="loginUsername" required>
+            </div>
+            <div class="form-group">
+                <label>密码：</label>
+                <input type="password" id="loginPassword" required>
+            </div>
+            <button type="submit" class="btn">登录</button>
+        </form>
+    </div>
+
+    <!-- 大盘行情 -->
+    <div class="card">
+        <h2>大盘行情 <span id="countdown">5s</span></h2>
+        <div class="market-tabs">
+            <button class="tab active" data-market="sh">沪市</button>
+            <button class="tab" data-market="sz">深市</button>
+            <button class="tab" data-market="cy">创业板</button>
+        </div>
+        <table id="marketTable">
+            <thead>
+            <tr>
+                <th>代码</th><th>名称</th><th>最新价</th><th>涨跌幅</th><th>涨跌额</th>
+            </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </div>
+</div>
+
+<script src="scripts/auth.js"></script>
+<script src="scripts/market.js"></script>
+</body>
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const guestMarket = new Market({
+            tableId: 'marketTable',
+            tabsSelector: '.market-tabs .tab',
+            countdownId: 'countdown'
+        });
+    });
+</script>
+</html>

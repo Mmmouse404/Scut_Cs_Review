@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>股票交易系统 - 用户</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="container">
+    <header>
+        <h2>欢迎，<span id="usernameDisplay"></span></h2>
+        <button id="logoutBtn" class="btn">注销</button>
+    </header>
+
+    <div class="left-column">
+        <div class="realtime-quote">
+            <div class="card">
+                <h2>实时行情 <span id="userCountdown">5s</span></h2>
+                <div class="user-market">
+                    <button class="tab active" data-market="sh">沪市</button>
+                    <button class="tab" data-market="sz">深市</button>
+                    <button class="tab" data-market="cy">创业板</button>
+                </div>
+                <table id="userMarketTable">
+                    <thead>
+                    <tr>
+                        <th>代码</th><th>名称</th><th>最新价</th><th>涨跌幅</th><th>涨跌额</th>
+                    </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+        </div>
+        <div class="stock-chart">
+            <div class="row">
+                <div class="col">
+                    <div class="card">
+                        <h2>个股走势</h2>
+                        <div class="chart-container" style="height: 400px; position: relative">
+                            <div class="chart-controls">
+                                <button class="refresh-btn" onclick="window.stockChart.update()">
+                                    <i class="refresh-icon"></i> 手动刷新
+                                </button>
+                                
+                            </div>
+                            <canvas id="stockChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+    </div>
+    <div class="right-column">
+        <!-- 交易表单 -->
+    <div class="card">
+        <h2>股票交易</h2>
+        <form id="tradeForm">
+            <div class="form-group">
+                <label>股票代码：</label>
+                <input type="text" id="tradeCode" required>
+                <span id="priceDisplay" class="price-hint"></span>
+            </div>
+            <div class="form-group">
+                <label>方向：</label>
+                <select id="tradeDirection">
+                    <option value="buy">买入</option>
+                    <option value="sell">卖出</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>数量（100的倍数）：</label>
+                <input type="number" id="tradeAmount" step="100" required>
+                <div class="input-group-append">
+                    <button type="button" class="btn btn-secondary" onclick="incrementAmount()">+</button>
+                    <button type="button" class="btn btn-secondary" onclick="decrementAmount()">-</button>
+                </div>
+            </div>
+            <button type="submit" class="btn">交易</button>
+        </form>
+    </div>
+    <!-- 持仓和图表 -->
+    <div class="row">
+        <div class="col">
+            <div class="card">
+                <h2>持仓 <span id="balance">元</span></h2>
+                <table id="positionTable">
+                    <thead>
+                    <tr><th>代码</th><th>名称</th><th>数量</th><th>盈亏</th></tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <!-- 交易记录 -->
+    <div class="card">
+        <h2>交易记录</h2>
+        <table id="recordTable">
+            <thead>
+            <tr><th>时间</th><th>代码</th><th>方向</th><th>数量</th><th>价格</th><th>状态</th></tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </div>
+    </div>
+    
+</div>
+<!-- 在引入其他JS文件之前先引入Chart.js -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<!-- <script src="chart.js"></script> -->
+<script src="scripts/trade.js"></script>
+<script src="scripts/market.js"></script>
+
+</body>
+
+<script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const userMarket = new Market({
+                tableId: 'userMarketTable',
+                tabsSelector: '.user-market .tab',
+                countdownId: 'userCountdown',
+                onStockClick: (code, row) => {
+                    // 加载个股走势图
+                    loadStockChart(code);
+                    // 高亮选中行
+                    document.querySelectorAll('#userMarketTable tr').forEach(r => {
+                        r.style.backgroundColor = r === row ? '#f0f8ff' : '';
+                    });
+                }
+            });
+        });
+    document.addEventListener('DOMContentLoaded', () => {
+        const userMarket = new Market({
+            tableId: 'userMarketTable',
+            tabsSelector: '.user-market .tab',
+            countdownId: 'userCountdown',
+            onStockClick: (code, row) => {
+                // 获取个股详情
+                const stockData = userMarket.fetchSingleStock(code);
+                // 显示详情弹窗
+                //showStockDetailModal(stockData);
+                // 用户界面特有逻辑：加载走势图
+                loadStockChart(code);
+                highlightSelectedRow(row);
+            }
+        });
+
+        function highlightSelectedRow(row) {
+            document.querySelectorAll('#userMarketTable tr').forEach(r => {
+                r.style.backgroundColor = r === row ? '#f8f9fa' : '';
+            });
+        }
+    });
+    
+</script>
+</html>
